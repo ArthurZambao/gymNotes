@@ -24,7 +24,7 @@ export function UserCard() {
       {/* Botão de Ação - Ajustado para mobile */}
       <button
         onClick={() => setIsEditing(!isEditing)}
-        className={`absolute top-4 right-4 text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
+        className={`cursor-pointer absolute top-4 right-4 text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
           }`}
       >
         {isEditing ? "CANCELAR" : "EDITAR PERFIL"}
@@ -100,7 +100,10 @@ export function UserCard() {
             <div className="flex flex-col col-span-2 sm:col-span-1 border-t border-zinc-800 pt-3 sm:border-0 sm:pt-0">
               <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">IMC</span>
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="text-lg font-semibold text-zinc-200">{imc.value.toFixed(1)}</span>
+                {!Number.isNaN(imc.value)
+                  ? <span className="text-lg font-semibold text-zinc-200">{imc.value.toFixed(1)}</span>
+                  : <span className="text-lg font-semibold text-zinc-500">--</span>
+                }
                 <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${imc.color.replace('text-', 'bg-').replace('500', '500/20')} ${imc.color}`}>
                   {imc.status.toUpperCase()}
                 </span>

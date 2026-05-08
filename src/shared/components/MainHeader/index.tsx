@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useUser } from "../../hooks/useUser";
-import { logoutRequest } from "@/src/lib/api/auth";
-import { Dumbbell, LogOut } from "lucide-react"; // Importando os ícones!
+import { Dumbbell, LogOut } from "lucide-react";
+import { useLogout } from "../../hooks/useLogout";
+
 
 export function MainHeader() {
   const user = useUser();
-
+  const logout = useLogout();
   return (
     <header className="w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 fixed top-0 z-50 transition-all">
       <div className="max-w-6xl mx-auto py-3 px-6 flex justify-between items-center">
@@ -38,11 +39,11 @@ export function MainHeader() {
                 </span>
 
                 <button
-                  onClick={logoutRequest}
-                  className="flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-red-500 transition-colors bg-zinc-900/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-red-500/30"
+                  onClick={logout}
+                  className="cursor-pointer flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-red-500 transition-colors bg-zinc-900/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-red-500/30"
                 >
                   <LogOut size={16} />
-                  <span className="cursor-pointer hidden sm:inline">Sair</span>
+                  <span className="hidden sm:inline">Sair</span>
                 </button>
               </div>
             </>

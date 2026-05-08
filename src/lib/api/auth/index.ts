@@ -27,7 +27,7 @@ export async function updateMeRequest(data: UpdateUserPayload) {
   return response.data;
 }
 
-export async function registerUser(data: registerUserPayload){
+export async function registerUser(data: registerUserPayload) {
   const response = await apiClient.post("/users", data)
   return response.data;
 }
