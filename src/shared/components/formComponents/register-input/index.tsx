@@ -17,7 +17,7 @@ export function RegisterInput({ form, handleChange, errors, type }: RegisterInpu
         onChange={(e) => handleChange(type, e.target.value)}
         type={type === "password" ? "password" : "text"}
         placeholder={type.charAt(0).toUpperCase() + type.slice(1)}
-        className="h-12 pl-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+        className="text-black h-12 pl-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
       />
 
       {errors[type] && (

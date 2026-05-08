@@ -8,3 +8,9 @@ export interface UpdateUserPayload {
   weight?: number;
   height?: number;
 }
+
+export interface registerUserPayload{
+  email: string;
+  password:string;
+  name:string;
+}

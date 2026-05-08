@@ -20,29 +20,32 @@ export function MainHeader() {
         </Link>
 
         <nav className="flex items-center gap-4 sm:gap-6">
-          <Link href="/home" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
-            Home
-          </Link>
-          <Link href="#" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
-            Sobre
-          </Link>
-
-          <div className="w-px h-5 bg-zinc-800 hidden sm:block"></div>
 
           {user ? (
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-zinc-400 hidden md:block">
-                Fala, <span className="text-emerald-400 font-bold">{user.name.split(' ')[0]}</span>
-              </span>
+            <>
+              <Link href="/home" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
+                Home
+              </Link>
+              <Link href="#" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
+                Sobre
+              </Link>
 
-              <button
-                onClick={logoutRequest}
-                className="flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-red-500 transition-colors bg-zinc-900/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-red-500/30"
-              >
-                <LogOut size={16} />
-                <span className="hidden sm:inline">Sair</span>
-              </button>
-            </div>
+              <div className="w-px h-5 bg-zinc-800 hidden sm:block"></div>
+
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium text-zinc-400 hidden md:block">
+                  Fala, <span className="text-emerald-400 font-bold">{user.name.split(' ')[0]}</span>
+                </span>
+
+                <button
+                  onClick={logoutRequest}
+                  className="flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-red-500 transition-colors bg-zinc-900/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-red-500/30"
+                >
+                  <LogOut size={16} />
+                  <span className="cursor-pointer hidden sm:inline">Sair</span>
+                </button>
+              </div>
+            </>
           ) : (
             <Link
               href="/login"

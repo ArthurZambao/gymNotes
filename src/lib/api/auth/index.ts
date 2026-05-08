@@ -1,5 +1,5 @@
 import apiClient from "../../http/api-client";
-import { LoginPayload, UpdateUserPayload } from "./type";
+import { LoginPayload, registerUserPayload, UpdateUserPayload } from "./type";
 
 export async function loginRequest(data: LoginPayload) {
   const response = await apiClient.post("/auth/login", data);
@@ -27,8 +27,12 @@ export async function updateMeRequest(data: UpdateUserPayload) {
   return response.data;
 }
 
+export async function registerUser(data: registerUserPayload){
+  const response = await apiClient.post("/users", data)
+  return response.data;
+}
+
 export async function logoutRequest() {
   await apiClient.post("/auth/logout");
   localStorage.removeItem("user");
-  cookieStore.delete("token");
 }

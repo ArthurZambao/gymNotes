@@ -31,7 +31,7 @@ export function LoginPage() {
               onChange={(e) => handleChange("email", e.target.value)}
               type="email"
               placeholder="Email"
-              className="h-12 pl-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="text-black h-12 pl-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             {errors.email && (
               <span className="text-red-500 text-sm">{errors.email}</span>
@@ -43,7 +43,7 @@ export function LoginPage() {
               onChange={(e) => handleChange("password", e.target.value)}
               type="password"
               placeholder="Senha"
-              className="h-12 pl-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="text-black h-12 pl-3 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             {errors.password && (
               <span className="text-red-500 text-sm">{errors.password}</span>

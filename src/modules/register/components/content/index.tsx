@@ -24,7 +24,7 @@ export function RegisterPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5 flex flex-col">
+        <form onSubmit={handleSubmit} className="tex-black space-y-5 flex flex-col">
           <RegisterInput form={form} errors={errors} handleChange={handleChange} type="name" />
           <RegisterInput form={form} errors={errors} handleChange={handleChange} type="email" />
           <RegisterInput form={form} errors={errors} handleChange={handleChange} type="password" />

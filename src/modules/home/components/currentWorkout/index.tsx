@@ -3,8 +3,11 @@
 import { Trash2, Plus, Edit2, Check, Dumbbell } from "lucide-react";
 import { muscleOptions, muscleTypes } from "@/src/shared/constants/MuscleOptions";
 import { useCurrentWorkout } from "../../hooks/useCurrentWorkout";
+import { useState } from "react";
+import { MuscleGroup, WorkoutExercise } from "@/src/types/currentWorkouttypes";
 
 export function CurrentWorkout() {
+  const [searchTerms, setSearchTerms] = useState<Record<number, string>>({});
   const {
     workouts,
     editWorkout,
@@ -72,7 +75,6 @@ export function CurrentWorkout() {
         </div>
       </div>
 
-      {/* DIAS DA SEMANA */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
         {workouts[0]?.days?.map((day, i) => (
           <button
@@ -98,7 +100,6 @@ export function CurrentWorkout() {
         </div>
       </div>
 
-      {/* LISTA DE EXERCÍCIOS */}
       <div className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
         <div className="grid grid-cols-12 gap-4 p-4 border-b border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider bg-zinc-900/50">
           <div className="col-span-6 md:col-span-8">
@@ -120,7 +121,7 @@ export function CurrentWorkout() {
           </div>
         )}
         <div className="divide-y divide-zinc-800/50">
-          {editedExercises.map((t: any, i: number) => {
+          {editedExercises.map((t: WorkoutExercise, i: number) => {
             const exercise = typeof t.exerciseId === "object" ? t.exerciseId : allExercises.find((ex) => ex._id === t.exerciseId);
 
             return (
@@ -128,7 +129,7 @@ export function CurrentWorkout() {
                 <div className="col-span-6 md:col-span-8">
                   <div className="font-semibold text-zinc-100">{exercise?.name || "Exercício"}</div>
                   <div className="flex gap-2 flex-wrap mt-1">
-                    {exercise?.muscleGroups?.map((m: any, idx: number) => (
+                    {exercise?.muscleGroups?.map((m: MuscleGroup, idx: number) => (
                       <span
                         key={idx}
                         className={`text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wide ${m.type === "primary" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" :
@@ -179,16 +180,13 @@ export function CurrentWorkout() {
         </div>
       </div>
 
-      {/* MODAL CRIAR NOVO EXERCÍCIO */}
       {exerciseMenuOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* BACKDROP COM BLUR */}
           <div
             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             onClick={() => setExerciseMenuOpen(false)}
           />
 
-          {/* CARD DO MODAL */}
           <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl p-6 w-full max-w-md z-10 animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[85vh]">
             <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
               <Dumbbell className="text-emerald-500" size={24} />
@@ -199,7 +197,6 @@ export function CurrentWorkout() {
               onSubmit={handleAddNewExercise}
               className="flex flex-col gap-5 overflow-hidden flex-1"
             >
-              {/* NOME DO EXERCÍCIO */}
               <div>
                 <label className="text-xs text-zinc-400 font-bold uppercase mb-2 block">
                   Nome do Exercício
@@ -215,7 +212,6 @@ export function CurrentWorkout() {
                 />
               </div>
 
-              {/* UNIDADE DE MEDIDA (KG OU PLACAS) */}
               <div>
                 <label className="text-xs text-zinc-400 font-bold uppercase mb-2 block">
                   Unidade de Medida
@@ -399,7 +395,6 @@ export function CurrentWorkout() {
               {newWorkoutDays.map((day, dayIndex) => (
                 <div key={dayIndex} className="flex flex-col md:flex-row gap-4 items-stretch">
 
-                  {/* ESQUERDA: Card do Dia (Nome e Exercícios Adicionados) */}
                   <div className="flex-1 border border-zinc-800 rounded-xl p-4 bg-zinc-950/50">
                     <div className="flex justify-between">
                       <h3 className="font-bold text-emerald-400 mb-3">{day.name}</h3>
@@ -423,32 +418,45 @@ export function CurrentWorkout() {
                     )}
                   </div>
 
-                  {/* DIREITA: Card de Biblioteca de Exercícios para Selecionar */}
                   <div className="w-full md:w-80 border border-zinc-800 rounded-xl p-4 bg-zinc-900 flex flex-col max-h-64">
+                    <div className="pb-4">
+                      <input
+                        className="bg-zinc-950 border border-zinc-700 focus:border-emerald-500 text-white text-sm font-semibold rounded-lg px-3 py-2 w-full outline-none transition-colors placeholder:text-zinc-500"
+                        type="text"
+                        placeholder="Buscar exercício..."
+                        value={searchTerms[dayIndex] ?? ""}
+                        onChange={(e) => setSearchTerms((prev) => ({ ...prev, [dayIndex]: e.target.value }))}
+                      />
+                    </div>
+
                     <h4 className="text-xs text-zinc-400 font-bold uppercase mb-3 flex items-center gap-2">
                       <Dumbbell size={14} className="text-emerald-500" />
                       Adicionar em: {day.name}
                     </h4>
                     <div className="overflow-y-auto pr-2 space-y-1 custom-scrollbar">
-                      {allExercises.map((ex) => (
-                        <div
-                          key={ex._id}
-                          onClick={() => handleAddExerciseToNewWorkout(dayIndex, ex)}
-                          className="p-2.5 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg cursor-pointer border border-transparent hover:border-zinc-700 transition-all flex justify-between items-center group"
-                        >
-                          <div className="flex flex-col">
-                            <span>{ex.name}</span>
-                            {ex.muscleGroups[0] && (
-                              <span className="text-[10px] text-zinc-500 uppercase tracking-wide">
-                                {ex.muscleGroups[0].name}
-                              </span>
-                            )}
+                      {allExercises
+                        .filter((ex) =>
+                          ex.name.toLowerCase().includes((searchTerms[dayIndex] ?? "").toLowerCase())
+                        )
+                        .map((ex) => (
+                          <div
+                            key={ex._id}
+                            onClick={() => handleAddExerciseToNewWorkout(dayIndex, ex)}
+                            className="cursor-pointer p-2.5 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg border border-transparent hover:border-zinc-700 transition-all flex justify-between items-center group"
+                          >
+                            <div className="flex flex-col">
+                              <span>{ex.name}</span>
+                              {ex.muscleGroups[0] && (
+                                <span className="text-[10px] text-zinc-500 uppercase tracking-wide">
+                                  {ex.muscleGroups[0].name}
+                                </span>
+                              )}
+                            </div>
+                            <button className="cursor-pointer w-6 h-6 flex items-center justify-center rounded bg-zinc-800 group-hover:bg-emerald-500 group-hover:text-zinc-950 text-zinc-500 transition-colors">
+                              <Plus size={14} />
+                            </button>
                           </div>
-                          <button className="w-6 h-6 flex items-center justify-center rounded bg-zinc-800 group-hover:bg-emerald-500 group-hover:text-zinc-950 text-zinc-500 transition-colors">
-                            <Plus size={14} />
-                          </button>
-                        </div>
-                      ))}
+                        ))}
                     </div>
                   </div>
 
