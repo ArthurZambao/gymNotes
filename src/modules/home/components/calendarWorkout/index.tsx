@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Dumbbell, Save, ChevronDown } from "lucide-react";
+import { Check, Dumbbell, Save, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCalendarWorkout } from "../../hooks/useCalendarWorkout";
 
 export function CalendarWorkout() {
@@ -23,7 +23,9 @@ export function CalendarWorkout() {
     activeWorkout,
     daysInMonth,
     year,
+    prevMonth,
     month,
+    nextMonth,
   } = useCalendarWorkout();
 
   if (!activeWorkout || !activeWorkout.days) {
@@ -41,9 +43,26 @@ export function CalendarWorkout() {
           <h3 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest">
             Frequência
           </h3>
-          <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">
-            {currentDate.toLocaleString("pt-BR", { month: "long", year: "numeric" })}
-          </span>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={prevMonth}
+              className="cursor-pointer p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider min-w-32 text-center">
+              {currentDate.toLocaleString("pt-BR", { month: "long", year: "numeric" })}
+            </span>
+
+            <button
+              onClick={nextMonth}
+              className="cursor-pointer p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
 
         {isLoading ? (

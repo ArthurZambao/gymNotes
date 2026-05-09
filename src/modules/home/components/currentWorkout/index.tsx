@@ -22,6 +22,7 @@ export function CurrentWorkout() {
     handleExerciseChange,
     handleExerciseList,
     handleShowEditWorkout,
+    handleSaveWorkout,
     handleRemoveExercise,
     handleSelectDay,
     handleCreateWorkoutDay,
@@ -75,21 +76,37 @@ export function CurrentWorkout() {
         </div>
       </div>
 
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-        {workouts[0]?.days?.map((day, i) => (
-          <button
-            key={i}
-            onClick={() => handleSelectDay(i)}
-            className={`cursor-pointer whitespace-nowrap px-5 py-2 rounded-xl text-sm font-bold transition-all ${selectedDayIndex === i
-              ? "bg-emerald-500 text-zinc-950 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
-              : "bg-zinc-950 text-zinc-400 hover:text-zinc-200 border border-zinc-800"
-              }`}
-          >
-            {day.name || `Dia ${i + 1}`}
-          </button>
-        ))}
+      <div className="mb-6">
+        {/* Mobile: carousel com 2 cards visíveis */}
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory sm:flex-wrap sm:overflow-visible">
+          {workouts[0]?.days?.map((day, i) => (
+            <button
+              key={i}
+              onClick={() => handleSelectDay(i)}
+              className={`
+          cursor-pointer whitespace-nowrap px-5 py-2 rounded-xl text-sm font-bold transition-all
+          snap-start shrink-0 w-[calc(50%-4px)] sm:w-auto
+          ${selectedDayIndex === i
+                  ? "bg-emerald-500 text-zinc-950 shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                  : "bg-zinc-950 text-zinc-400 hover:text-zinc-200 border border-zinc-800"
+                }
+        `}
+            >
+              {day.name || `Dia ${i + 1}`}
+            </button>
+          ))}
+        </div>
 
-        <div className="ml-auto flex items-center">
+        {/* Botões Salvar/Editar separados */}
+        <div className="flex justify-end items-center mt-2">
+          {editWorkout && (
+            <button
+              onClick={() => handleSaveWorkout()}
+              className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors text-emerald-400 hover:text-emerald-300"
+            >
+              Salvar
+            </button>
+          )}
           <button
             onClick={() => handleShowEditWorkout()}
             className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${editWorkout ? "bg-red-500/10 text-red-500 hover:bg-red-500/20" : "text-zinc-400 hover:text-white"
@@ -125,14 +142,14 @@ export function CurrentWorkout() {
             const exercise = typeof t.exerciseId === "object" ? t.exerciseId : allExercises.find((ex) => ex._id === t.exerciseId);
 
             return (
-              <div key={i} className="flex flex-col sm:grid sm:grid-cols-12 gap-4 p-4 items-start sm:items-center hover:bg-zinc-900/50 transition-colors group">
+              <div key={i} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-zinc-900/50 transition-colors group">
                 <div className="col-span-6 md:col-span-8">
                   <div className="font-semibold text-zinc-100">{exercise?.name || "Exercício"}</div>
-                  <div className="flex gap-2 flex-wrap mt-1">
+                  <div className="flex flex-row flex-wrap gap-1 mt-1">
                     {exercise?.muscleGroups?.map((m: MuscleGroup, idx: number) => (
                       <span
                         key={idx}
-                        className={`text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wide ${m.type === "primary" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" :
+                        className={`w-fit text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wide ${m.type === "primary" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" :
                           m.type === "secondary" ? "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20" :
                             "bg-zinc-800 text-zinc-400"
                           }`}
@@ -142,7 +159,6 @@ export function CurrentWorkout() {
                     ))}
                   </div>
                 </div>
-
                 <div className="col-span-3 md:col-span-2 flex justify-center">
                   {editWorkout ? (
                     <input

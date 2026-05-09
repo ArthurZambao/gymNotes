@@ -1,10 +1,11 @@
 import apiClient from "../../http/api-client";
 import { SaveWorkoutLogDTO } from "./types";
 
-export async function getWorkoutLogsByMonth(month: string) {
+export async function getWorkoutLogsByMonth(month: string, noCache = false) {
   try {
     const response = await apiClient.get('/workout-logs', {
-      params: { month }
+      params: { month },
+      cache: noCache ? false : undefined,
     });
     return response.data;
   } catch (error) {

@@ -7,11 +7,20 @@ export function useUser() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
+    const sync = () => {
+      const stored = localStorage.getItem("user");
+      setUser(stored ? JSON.parse(stored) : null);
+    };
 
-    if (stored) {
-      setUser(JSON.parse(stored));
-    }
+    sync();
+
+    window.addEventListener("user-changed", sync);
+    window.addEventListener("storage", sync);
+
+    return () => {
+      window.removeEventListener("user-changed", sync);
+      window.removeEventListener("storage", sync);
+    };
   }, []);
 
   return user;

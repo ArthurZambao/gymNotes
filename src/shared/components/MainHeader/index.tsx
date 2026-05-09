@@ -4,11 +4,14 @@ import Link from "next/link";
 import { useUser } from "../../hooks/useUser";
 import { Dumbbell, LogOut } from "lucide-react";
 import { useLogout } from "../../hooks/useLogout";
+import { usePathname } from "next/navigation";
 
 
 export function MainHeader() {
   const user = useUser();
   const logout = useLogout();
+  const pathName = usePathname();
+
   return (
     <header className="w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 fixed top-0 z-50 transition-all">
       <div className="max-w-6xl mx-auto py-3 px-6 flex justify-between items-center">
@@ -24,11 +27,11 @@ export function MainHeader() {
 
           {user ? (
             <>
+              <Link href="/landing" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
+                Início
+              </Link>
               <Link href="/home" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
                 Home
-              </Link>
-              <Link href="#" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
-                Sobre
               </Link>
 
               <div className="w-px h-5 bg-zinc-800 hidden sm:block"></div>
@@ -48,12 +51,28 @@ export function MainHeader() {
               </div>
             </>
           ) : (
-            <Link
-              href="/login"
-              className="bg-emerald-500 hover:bg-emerald-600 text-zinc-950 text-sm font-bold px-5 py-2 rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]"
-            >
-              Entrar
-            </Link>
+            <>
+              <Link href="/landing" className="text-sm font-bold text-zinc-400 hover:text-white transition-colors hidden sm:block">
+                Início
+              </Link>
+              <div className="w-px h-5 bg-zinc-800 hidden sm:block"></div>
+
+              {pathName === "/login" ? (
+                <Link
+                  href="/login"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-zinc-950 text-sm font-bold px-5 py-2 rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+                >
+                  Cadastrar-se
+                </Link>
+              ) : (
+                <Link
+                  href="/login"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-zinc-950 text-sm font-bold px-5 py-2 rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+                >
+                  Entrar
+                </Link>
+              )}
+            </>
           )}
         </nav>
       </div>

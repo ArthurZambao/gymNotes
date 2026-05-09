@@ -44,6 +44,7 @@ export function useLoginForm(loginSchema: any) {
     try {
       const data = await loginRequest(result.data);
       localStorage.setItem("user", JSON.stringify(data.user));
+      window.dispatchEvent(new Event("user-changed"));
       console.log("LOGADO:", data);
 
       toast.success("Login bem-sucedido!");

@@ -4,6 +4,7 @@ import { MainHeader } from "../shared/components/MainHeader";
 import { MainFooter } from "../shared/components/MainFooter";
 import Image from "next/image";
 import { ToastProvider } from "../shared/components/ToasterProvider";
+import { MainContent } from "../shared/components/mainContext";
 
 export const metadata: Metadata = {
   title: "GymNotes",
@@ -30,10 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <MainHeader />
-        <main className="flex-1 pt-20 relative z-10">
+        <MainContent>
           {children}
           <ToastProvider />
-        </main>
+        </MainContent>
         <MainFooter />
       </body>
     </html>

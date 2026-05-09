@@ -19,9 +19,9 @@ export function useCalendarWorkout() {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const mesAtualStr = `${year}-${String(month + 1).padStart(2, "0")}`;
 
-  const fetchLogs = async () => {
+  const fetchLogs = async (noCache = false) => {
     setIsLoading(true);
-    const data = await getWorkoutLogsByMonth(mesAtualStr);
+    const data = await getWorkoutLogsByMonth(mesAtualStr, noCache);
     setLogsDoMes(data || []);
     setIsLoading(false);
   };
@@ -42,8 +42,10 @@ export function useCalendarWorkout() {
   }, [logsDoMes, selectedDate]);
 
   useEffect(() => {
-    setSelectedWorkoutDay("");
-    setExerciseForms([]);
+    if (!currentLog) {
+      setSelectedWorkoutDay("");
+      setExerciseForms([]);
+    }
   }, [selectedDate]);
 
   const handleSelectWorkoutDay = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -70,6 +72,15 @@ export function useCalendarWorkout() {
     setExerciseForms(newForms);
   };
 
+  const prevMonth = () => {
+    setCurrentDate(new Date(year, month - 1, 1));
+  };
+
+  const nextMonth = () => {
+    setCurrentDate(new Date(year, month + 1, 1));
+  };
+
+
   const handleSaveLog = async () => {
 
     if (!activeWorkout || !selectedWorkoutDay) return;
@@ -84,8 +95,7 @@ export function useCalendarWorkout() {
       };
 
       await saveWorkoutLog(payload);
-      await fetchLogs();
-      setSelectedWorkoutDay("");
+      await fetchLogs(true);
     } catch (error) {
       console.error("Falha ao salvar treino", error);
       alert("Erro ao salvar o treino. Tente novamente.");
@@ -126,6 +136,8 @@ export function useCalendarWorkout() {
     activeWorkout,
     daysInMonth,
     year,
+    prevMonth,
     month,
+    nextMonth,
   };
 }

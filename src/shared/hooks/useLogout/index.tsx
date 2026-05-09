@@ -6,6 +6,7 @@ export function useLogout() {
 
   return async () => {
     await logoutRequest();
+    window.dispatchEvent(new Event("user-changed"));
     router.push("/login");
   };
 }
