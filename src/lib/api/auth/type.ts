@@ -7,6 +7,7 @@ export interface LoginPayload {
 export interface UpdateUserPayload {
   weight?: number;
   height?: number;
+  avatar?: string;
 }
 
 export interface registerUserPayload{

@@ -3,8 +3,8 @@ import "./globals.css";
 import { MainHeader } from "../shared/components/MainHeader";
 import { MainFooter } from "../shared/components/MainFooter";
 import Image from "next/image";
-import { ToastProvider } from "../shared/components/ToasterProvider";
 import { MainContent } from "../shared/components/mainContext";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "GymNotes",
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MainHeader />
         <MainContent>
           {children}
-          <ToastProvider />
+          <Toaster/>
         </MainContent>
         <MainFooter />
       </body>

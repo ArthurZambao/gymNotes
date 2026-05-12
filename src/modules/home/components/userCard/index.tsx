@@ -2,9 +2,12 @@
 
 import { calculateIMC } from "@/src/shared/utils/calculateIMC";
 import { useCurrentWorkout } from "../../hooks/useCurrentWorkout";
+import Image from "next/image";
+import { Camera } from "lucide-react";
+import { AVATAR_OPTIONS } from "@/src/shared/constants/avatar";
 
 export function UserCard() {
-  const { user, isEditing, setIsEditing, weight, setWeight, height, setHeight, handleUpdate } = useCurrentWorkout();
+  const { user, isEditing, setIsEditing, weight, setWeight, height, setHeight, handleUpdate, pictureMenu, openPictureMenu, newAvatar, handleUpdateAvatar } = useCurrentWorkout();
 
   if (!user) {
     return (
@@ -17,11 +20,51 @@ export function UserCard() {
   const imc = calculateIMC(user.weight, user.height);
 
   return (
-    <div className="relative z-0 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row items-center md:items-start gap-6 overflow-hidden">
-      {/* Efeito visual de fundo */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full -z-10" />
 
-      {/* Botão de Ação - Ajustado para mobile */}
+    <div className="relative z-0 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row items-center md:items-start gap-6 overflow-hidden">
+      {pictureMenu && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => openPictureMenu(false)}
+          />
+
+          <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl p-6 w-full max-w-md z-10 animate-in fade-in zoom-in-95 duration-200">
+            <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
+              <Camera className="text-emerald-500" size={24} />
+              Alterar Avatar
+            </h2>
+
+            <div className="grid grid-cols-4 gap-3">
+              {AVATAR_OPTIONS.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={() => {openPictureMenu(false); handleUpdateAvatar(src)}}
+                  className="cursor-pointer w-full aspect-square rounded-full overflow-hidden border-2 border-zinc-700 hover:border-emerald-500 transition-colors"
+                >
+                  <Image
+                    width={64}
+                    height={64}
+                    src={src}
+                    alt={`Avatar ${i + 1}`}
+                    className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-zinc-800">
+              <button
+                onClick={() => openPictureMenu(false)}
+                className="px-5 py-2 text-zinc-400 hover:text-white font-semibold transition-colors"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full -z-10" />
       <button
         onClick={() => setIsEditing(!isEditing)}
         className={`cursor-pointer absolute top-4 right-4 text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
@@ -30,16 +73,20 @@ export function UserCard() {
         {isEditing ? "CANCELAR" : "EDITAR PERFIL"}
       </button>
 
-      {/* Avatar - Centralizado no mobile */}
-      <div className="relative shrink-0">
-        <img
-          src="https://github.com/shadcn.png"
+      <div className="relative w-24 h-24 md:w-20 md:h-20 shrink-0 group cursor-pointer">
+        <Image
+          fill
+          src={newAvatar || user.avatar || "https://github.com/shadcn.png"}
           alt="Avatar"
-          className="w-24 h-24 md:w-20 md:h-20 rounded-full border-2 border-emerald-500 object-cover shadow-xl"
+          className="rounded-full border-2 border-emerald-500 object-cover shadow-xl"
         />
+
+        <div onClick={() => openPictureMenu(true)} className="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <Camera className="w-5 h-5 text-white" />
+          <span className="text-white text-[10px] font-medium mt-1">Alterar</span>
+        </div>
       </div>
 
-      {/* Conteúdo Principal */}
       <div className="flex-1 w-full text-center md:text-left">
         <h2 className="text-2xl font-extrabold text-white tracking-tight leading-tight">{user.name}</h2>
         <p className="text-zinc-400 text-sm mb-4">{user.email}</p>

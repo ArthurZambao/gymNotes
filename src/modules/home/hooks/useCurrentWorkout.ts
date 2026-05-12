@@ -9,6 +9,8 @@ import { toast } from "sonner";
 
 export function useCurrentWorkout() {
   const user = useUser();
+  const [newAvatar, setNewAvatar] = useState("");
+  const [pictureMenu, openPictureMenu] = useState(false);
   const [newExerciseUnit, setNewExerciseUnit] = useState<"kg" | "placas">("kg");
   const [workouts, setWorkouts] = useState<WorkoutResponseDTO[]>([]);
   const [allExercises, setAllExercises] = useState<Exercise[]>([]);
@@ -31,8 +33,6 @@ export function useCurrentWorkout() {
 
   const currentWorkout = workouts?.[0];
   const currentDay = currentWorkout?.days?.[selectedDayIndex];
-
-  // CONSTANTE QUE FALTAVA PARA A RENDERIZAÇÃO DA TABELA
   const editedExercises = currentDay?.exercises || [];
   const canAddExercise = currentWorkout?.days?.length > 0;
 
@@ -102,6 +102,7 @@ export function useCurrentWorkout() {
     if (user) {
       setWeight(user.weight || 0);
       setHeight(user.height || 0);
+      setNewAvatar(user.avatar || "");
     }
   }, [user]);
 
@@ -129,6 +130,20 @@ export function useCurrentWorkout() {
       setWorkouts(updated);
     } catch (err) {
       toast.error("Erro ao criar treino");
+    }
+  }
+
+  async function handleUpdateAvatar(picUrl: string) {
+    try {
+      await updateUserRequest(user!.id, { avatar: picUrl });
+      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      localStorage.setItem("user", JSON.stringify({ ...stored, avatar: picUrl }));
+
+      openPictureMenu(false);
+      toast.success("Avatar atualizado com sucesso!");
+      window.location.reload();
+    } catch {
+      toast.error("Erro ao atualizar avatar");
     }
   }
 
@@ -267,6 +282,8 @@ export function useCurrentWorkout() {
     setIsEditing,
     setWeight,
     setHeight,
+    setNewAvatar,
+    newAvatar,
     handleUpdate,
     workouts,
     allExercises,
@@ -279,6 +296,8 @@ export function useCurrentWorkout() {
     setCreateWorkoutOpen,
     newWorkoutName,
     setNewWorkoutName,
+    pictureMenu,
+    openPictureMenu,
     newWorkoutDays,
     newExerciseUnit,
     setNewExerciseUnit,
@@ -304,5 +323,6 @@ export function useCurrentWorkout() {
     handleAddExercise,
     handleDeleteWorkout,
     handleRemoveWorkoutDay,
+    handleUpdateAvatar,
   };
 }
