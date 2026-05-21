@@ -2,6 +2,8 @@
 
 import { Check, Dumbbell, Save, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCalendarWorkout } from "../../hooks/useCalendarWorkout";
+import { WorkoutExercise } from "@/src/types/currentWorkouttypes";
+import { CurrentLog } from "@/src/types/currentLog";
 
 export function CalendarWorkout() {
   const {
@@ -70,7 +72,7 @@ export function CalendarWorkout() {
             Carregando dados...
           </div>
         ) : (
-          <div className="grid grid-cols-7 gap-1.5 flex-1 content-start">
+          <div className="grid grid-cols-7 gap-1 sm:gap-1.5 flex-1 content-start">
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const dayNumber = i + 1;
               const dateForSquare = new Date(year, month, dayNumber);
@@ -135,28 +137,30 @@ export function CalendarWorkout() {
 
           {currentLog ? (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-zinc-900/80 text-zinc-500 text-xs uppercase font-bold tracking-wider border-b border-zinc-800">
+              <table className="w-full text-xs sm:text-sm text-left">
+                <thead className="bg-zinc-900/80 text-zinc-500 text-[10px] sm:text-xs uppercase font-bold tracking-wider border-b border-zinc-800">
                   <tr>
-                    <th className="px-4 py-3">Exercício</th>
-                    <th className="px-4 py-3 text-center w-24">Carga</th>
-                    <th className="px-4 py-3 text-center w-20">Séries</th>
-                    <th className="px-4 py-3 text-center w-20">Reps</th>
+                    <th className="px-3 sm:px-4 py-3">Exercício</th>
+                    <th className="px-3 sm:px-4 py-3 text-center w-16 sm:w-24">Carga</th>
+                    <th className="px-3 sm:px-4 py-3 text-center w-14 sm:w-20">Séries</th>
+                    <th className="px-3 sm:px-4 py-3 text-center w-14 sm:w-20">Reps</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-zinc-800/50">
-                  {currentLog.exercises.map((t: any, i: number) => (
+                  {currentLog.exercises.map((t: CurrentLog, i: number) => (
                     <tr key={i} className="hover:bg-zinc-800/30 transition-colors">
-                      <td className="px-4 py-3 font-semibold text-zinc-200">
-                        {getExerciseName(t.exerciseId)}
+                      <td className="px-3 sm:px-4 py-3 font-semibold text-zinc-200">
+                        {getExerciseName(t.id)}
                       </td>
-                      <td className="px-4 py-3 text-center">
-                        <span className="bg-zinc-800 text-emerald-400 font-bold px-2.5 py-1 rounded text-xs shadow-inner">
-                          {t.weight} {getExerciseUnit(t.exerciseId)}
+                      <td className="px-3 sm:px-4 py-3 text-center">
+                        <span className="bg-zinc-800 text-emerald-400 font-bold px-2 sm:px-2.5 py-1 rounded text-[10px] sm:text-xs shadow-inner">
+                          {t.weight} {getExerciseUnit(t.id)}
                         </span>
                       </td>
-                      <td className="px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
-                      <td className="px-4 py-3 text-center font-medium text-zinc-400">{t.reps}</td>
+                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
+                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">
+                        {Array.isArray(t.reps) ? t.reps.join(' · ') : t.reps}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -206,44 +210,66 @@ export function CalendarWorkout() {
                     </button>
                   </div>
 
-                  <div className="space-y-2 mb-6 max-h-62.5 overflow-y-auto custom-scrollbar pr-2">
+                  <div className="space-y-3 mb-6 max-h-62.5 overflow-y-auto custom-scrollbar">
                     {exerciseForms.map((exForm, index) => (
-                      <div key={index} className="grid grid-cols-12 gap-3 items-center bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
-                        <div className="col-span-12 lg:col-span-5 font-semibold text-zinc-200 text-sm truncate">
+                      <div key={index} className="flex flex-col gap-3 bg-zinc-900/50 p-3 sm:p-4 rounded-lg border border-zinc-800">
+                        {/* Exercise name - always full width */}
+                        <div className="font-semibold text-zinc-200 text-sm">
                           {getExerciseName(exForm.exerciseId)}
                         </div>
 
-                        <div className="col-span-6 sm:col-span-3 flex flex-col">
-                          <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">
-                            {getExerciseUnit(exForm.exerciseId) === "Pl" ? "Placas" : "Carga (kg)"}
+                        {/* Carga + Séries row */}
+                        <div className="flex gap-3">
+                          <div className="flex-1 flex flex-col">
+                            <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">
+                              {getExerciseUnit(exForm.exerciseId) === "Pl" ? "Placas" : "Carga (kg)"}
+                            </label>
+                            <input
+                              type="number"
+                              value={exForm.weight || ''}
+                              onChange={(e) => handleFormChange(index, 'weight', e.target.value)}
+                              className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-emerald-400 font-bold outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-700"
+                              placeholder="0"
+                            />
+                          </div>
+
+                          <div className="flex-1 flex flex-col">
+                            <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Séries</label>
+                            <input
+                              type="number"
+                              value={exForm.sets || ''}
+                              onChange={(e) => handleFormChange(index, 'sets', e.target.value)}
+                              className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
+                            />
+                          </div>
+                        </div>
+
+                        {/* Reps por série - with S1/S2/S3 labels */}
+                        <div className="flex flex-col">
+                          <label className="text-[10px] text-zinc-500 uppercase font-bold mb-2">
+                            Reps por série
                           </label>
-                          <input
-                            type="number"
-                            value={exForm.weight || ''}
-                            onChange={(e) => handleFormChange(index, 'weight', e.target.value)}
-                            className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-emerald-400 font-bold outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-700"
-                            placeholder="0"
-                          />
-                        </div>
 
-                        <div className="col-span-3 sm:col-span-2 flex flex-col">
-                          <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Séries</label>
-                          <input
-                            type="number"
-                            value={exForm.sets || ''}
-                            onChange={(e) => handleFormChange(index, 'sets', e.target.value)}
-                            className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
-                          />
-                        </div>
-
-                        <div className="col-span-3 sm:col-span-2 flex flex-col">
-                          <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Reps</label>
-                          <input
-                            type="number"
-                            value={exForm.reps || ''}
-                            onChange={(e) => handleFormChange(index, 'reps', e.target.value)}
-                            className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
-                          />
+                          <div className="flex flex-wrap gap-2">
+                            {exForm.reps?.map((rep, repIndex) => (
+                              <div key={repIndex} className="flex flex-col items-center gap-1">
+                                <span className="text-[9px] text-zinc-600 font-bold uppercase">S{repIndex + 1}</span>
+                                <input
+                                  type="number"
+                                  value={rep || ''}
+                                  onChange={(e) =>
+                                    handleFormChange(
+                                      index,
+                                      'reps',
+                                      Number(e.target.value),
+                                      repIndex
+                                    )
+                                  }
+                                  className="w-12 sm:w-14 bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
+                                />
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     ))}

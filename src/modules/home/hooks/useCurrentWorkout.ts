@@ -176,7 +176,7 @@ export function useCurrentWorkout() {
     updated[0].days[selectedDayIndex].exercises.push({
       exerciseId: { _id: exercise._id || "", name: exercise.name || "" },
       sets: 3,
-      reps: 10,
+      reps: Array(3).fill(10),
       order: currentDay.exercises.length,
     });
     setWorkouts(updated);
@@ -223,7 +223,21 @@ export function useCurrentWorkout() {
   ) {
     const updated = [...workouts];
 
-    updated[0].days[selectedDayIndex].exercises[index][field] = value;
+    const exercise =
+      updated[0].days[selectedDayIndex].exercises[index];
+
+    if (field === "sets") {
+      exercise.sets = value;
+
+      // ajusta o tamanho do array reps
+      exercise.reps = Array(value).fill(
+        exercise.reps?.[0] || 10
+      );
+    }
+
+    if (field === "reps") {
+      exercise.reps = Array(exercise.sets).fill(value);
+    }
 
     setWorkouts(updated);
   }

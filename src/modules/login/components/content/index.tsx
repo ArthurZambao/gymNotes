@@ -11,14 +11,9 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-zinc-100 px-6 relative overflow-hidden selection:bg-emerald-500/30">
-
-      {/* Glow de fundo */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-125 h-125 bg-emerald-500/8 blur-[140px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-75 h-75 bg-emerald-600/5 blur-[100px] rounded-full pointer-events-none" />
-
       <div className="w-full max-w-md relative z-10">
-
-        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -32,8 +27,6 @@ export function LoginPage() {
             </span>
           </Link>
         </motion.div>
-
-        {/* Card */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -42,11 +35,11 @@ export function LoginPage() {
         >
           {/* Header do card */}
           <div className="mb-8">
-            <h1 className="text-2xl font-extrabold text-zinc-100 tracking-tight">
-              Bem-vindo de volta
+            <h1 className="text-2xl font-extrabold text-zinc-100 tracking-tight wrap-break-word">
+              Bem-vindo <span className="green-shine-animation">{form.email.slice(0, form.email.indexOf("@")) + " !" || ""}</span>
             </h1>
             <p className="text-zinc-400 mt-1 text-sm">
-              Continue sua evolução 💪
+              Continue sua evolução
             </p>
           </div>
 

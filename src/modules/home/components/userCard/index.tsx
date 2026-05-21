@@ -67,7 +67,7 @@ export function UserCard() {
       <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full -z-10" />
       <button
         onClick={() => setIsEditing(!isEditing)}
-        className={`cursor-pointer absolute top-4 right-4 text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
+        className={`cursor-pointer absolute top-4 right-4 text-[10px] sm:text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
           }`}
       >
         {isEditing ? "CANCELAR" : "EDITAR PERFIL"}

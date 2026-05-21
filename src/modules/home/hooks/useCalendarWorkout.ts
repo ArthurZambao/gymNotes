@@ -54,21 +54,52 @@ export function useCalendarWorkout() {
 
     const dayData = activeWorkout?.days.find((d: any) => d.name === dayName);
     if (dayData) {
-      const initialForms = dayData.exercises.map((ex: any) => ({
-        exerciseId: typeof ex.exerciseId === 'object' ? ex.exerciseId._id : ex.exerciseId,
-        sets: ex.sets || 0,
-        reps: ex.reps || 0,
-        weight: 0,
-      }));
+      const initialForms = dayData.exercises.map((ex: any) => {
+        const sets = ex.sets || 3;
+        const existingReps = ex.reps;
+        // Ensure reps is always an array with one entry per set
+        const reps = Array.isArray(existingReps)
+          ? existingReps
+          : Array(sets).fill(existingReps || 10);
+        return {
+          exerciseId: typeof ex.exerciseId === 'object' ? ex.exerciseId._id : ex.exerciseId,
+          sets,
+          reps,
+          weight: 0,
+        };
+      });
       setExerciseForms(initialForms);
     } else {
       setExerciseForms([]);
     }
   };
 
-  const handleFormChange = (index: number, field: 'sets' | 'reps' | 'weight', value: string | number) => {
+  const handleFormChange = (
+    index: number,
+    field: 'sets' | 'reps' | 'weight',
+    value: string | number,
+    repIndex?: number
+  ) => {
     const newForms = [...exerciseForms];
-    newForms[index][field] = Number(value);
+
+    if (field === 'sets') {
+      const sets = Number(value);
+
+      newForms[index].sets = sets;
+
+      newForms[index].reps = Array(sets).fill(
+        newForms[index].reps?.[0] || 10
+      );
+    }
+
+    else if (field === 'reps' && repIndex !== undefined) {
+      newForms[index].reps[repIndex] = Number(value);
+    }
+
+    else if (field === 'weight') {
+      newForms[index].weight = Number(value);
+    }
+
     setExerciseForms(newForms);
   };
 

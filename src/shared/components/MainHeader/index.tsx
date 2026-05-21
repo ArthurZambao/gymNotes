@@ -38,7 +38,7 @@ export function MainHeader() {
 
               <div className="flex items-center gap-4">
                 <span className="text-sm font-medium text-zinc-400 hidden md:block">
-                  Fala, <span className="text-emerald-400 font-bold">{user.name.split(' ')[0]}</span>
+                  Fala, <span className="green-shine-animation">{user.name.split(' ')[0]}</span>
                 </span>
 
                 <button

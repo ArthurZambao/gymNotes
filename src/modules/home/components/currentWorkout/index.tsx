@@ -60,16 +60,16 @@ export function CurrentWorkout() {
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
           <button
             onClick={handleExerciseList}
-            className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold rounded-lg transition-colors text-sm"
+            className="cursor-pointer flex items-center justify-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold rounded-lg transition-colors text-sm"
           >
             <Plus size={16} /> Novo Exercício
           </button>
           <button
             onClick={() => setCreateWorkoutOpen(true)}
-            className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-lg transition-colors text-sm"
+            className="cursor-pointer flex items-center justify-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-lg transition-colors text-sm"
           >
             <Plus size={16} /> Criar Treino
           </button>
@@ -78,7 +78,7 @@ export function CurrentWorkout() {
 
       <div className="mb-6">
         {/* Mobile: carousel com 2 cards visíveis */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory sm:flex-wrap sm:overflow-visible">
+        <div className="flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory sm:flex-wrap sm:overflow-visible scrollbar-hide">
           {workouts[0]?.days?.map((day, i) => (
             <button
               key={i}
@@ -118,8 +118,8 @@ export function CurrentWorkout() {
       </div>
 
       <div className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
-        <div className="grid grid-cols-12 gap-4 p-4 border-b border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider bg-zinc-900/50">
-          <div className="col-span-6 md:col-span-8">
+        <div className="grid grid-cols-12 gap-2 sm:gap-4 p-3 sm:p-4 border-b border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider bg-zinc-900/50">
+          <div className="col-span-8">
             <div className="flex">
               <span className="pr-4">Exercício</span>
               <div className="flex gap-2">
@@ -129,8 +129,8 @@ export function CurrentWorkout() {
               </div>
             </div>
           </div>
-          <div className="col-span-3 md:col-span-2 text-center">Séries</div>
-          <div className="col-span-3 md:col-span-2 text-center">Reps</div>
+          <div className="col-span-2 text-center">Séries</div>
+          <div className="col-span-2 text-center">Reps</div>
         </div>
         {editedExercises.length === 0 && (
           <div className="p-6 text-center text-zinc-400">
@@ -142,9 +142,9 @@ export function CurrentWorkout() {
             const exercise = typeof t.exerciseId === "object" ? t.exerciseId : allExercises.find((ex) => ex._id === t.exerciseId);
 
             return (
-              <div key={i} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-zinc-900/50 transition-colors group">
-                <div className="col-span-6 md:col-span-8">
-                  <div className="font-semibold text-zinc-100">{exercise?.name || "Exercício"}</div>
+              <div key={i} className="grid grid-cols-12 gap-2 sm:gap-4 p-3 sm:p-4 items-center hover:bg-zinc-900/50 transition-colors group">
+                <div className="col-span-8">
+                  <div className="font-semibold text-zinc-100 text-sm sm:text-base">{exercise?.name || "Exercício"}</div>
                   <div className="flex flex-row flex-wrap gap-1 mt-1">
                     {exercise?.muscleGroups?.map((m: MuscleGroup, idx: number) => (
                       <span
@@ -159,34 +159,34 @@ export function CurrentWorkout() {
                     ))}
                   </div>
                 </div>
-                <div className="col-span-3 md:col-span-2 flex justify-center">
+                <div className="col-span-2 flex justify-center">
                   {editWorkout ? (
                     <input
                       type="number"
                       value={t.sets}
                       onChange={(e) => handleExerciseChange(i, "sets", Number(e.target.value))}
-                      className="w-16 bg-zinc-900 border border-zinc-700 rounded p-1 text-center text-white outline-none focus:border-emerald-500"
+                      className="w-12 sm:w-16 bg-zinc-900 border border-zinc-700 rounded p-1 text-center text-white outline-none focus:border-emerald-500 text-sm"
                     />
                   ) : (
-                    <span className="bg-zinc-800 px-3 py-1 rounded text-zinc-300 font-medium">{t.sets}</span>
+                    <span className="bg-zinc-800 px-2 sm:px-3 py-1 rounded text-zinc-300 font-medium text-sm">{t.sets}</span>
                   )}
                 </div>
 
-                <div className="col-span-3 md:col-span-2 flex justify-center items-center gap-2">
+                <div className="col-span-2 flex justify-center items-center gap-1 sm:gap-2">
                   {editWorkout ? (
                     <input
                       type="number"
-                      value={t.reps}
+                      value={Array.isArray(t.reps) ? t.reps[0] ?? '' : t.reps}
                       onChange={(e) => handleExerciseChange(i, "reps", Number(e.target.value))}
-                      className="w-16 bg-zinc-900 border border-zinc-700 rounded p-1 text-center text-white outline-none focus:border-emerald-500"
+                      className="w-12 sm:w-16 bg-zinc-900 border border-zinc-700 rounded p-1 text-center text-white outline-none focus:border-emerald-500 text-sm"
                     />
                   ) : (
-                    <span className="bg-zinc-800 px-3 py-1 rounded text-zinc-300 font-medium">{t.reps}</span>
+                    <span className="bg-zinc-800 px-2 sm:px-3 py-1 rounded text-zinc-300 font-medium text-sm">{Array.isArray(t.reps) ? t.reps[0] : t.reps}</span>
                   )}
 
                   {editWorkout && (
-                    <button onClick={() => handleRemoveExercise(i)} className="cursor-pointer text-zinc-600 hover:text-red-500 transition-colors ml-2">
-                      <Trash2 size={18} />
+                    <button onClick={() => handleRemoveExercise(i)} className="cursor-pointer text-zinc-600 hover:text-red-500 transition-colors ml-1 sm:ml-2">
+                      <Trash2 size={16} />
                     </button>
                   )}
                 </div>

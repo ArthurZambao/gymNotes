@@ -1,7 +1,7 @@
 export interface ExerciseLogPayload {
   exerciseId: string;
   sets: number;
-  reps: number;
+  reps: number[];
   weight: number;
 }
 

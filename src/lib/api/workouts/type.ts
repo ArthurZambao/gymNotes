@@ -6,7 +6,7 @@ export type CreateWorkoutDTO = {
     exercises: {
       exerciseId: string;
       sets: number;
-      reps: number;
+      reps: number[];
       order: number;
     }[];
   }[];
@@ -21,7 +21,7 @@ export type WorkoutResponseDTO = {
     exercises: {
       exerciseId: { _id: string; name: string };
       sets: number;
-      reps: number;
+      reps: number[];
       order: number;
     }[];
   }[];

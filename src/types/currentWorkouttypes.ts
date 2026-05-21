@@ -12,5 +12,5 @@ export interface Exercise {
 export interface WorkoutExercise {
   exerciseId: string | Exercise;
   sets: number;
-  reps: number;
+  reps: number | number[];
 }
