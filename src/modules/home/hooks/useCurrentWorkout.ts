@@ -156,12 +156,12 @@ export function useCurrentWorkout() {
 
   function handleAddExerciseToNewWorkout(dayIndex: number, exercise: Exercise) {
     const updated = [...newWorkoutDays];
+    const sets = 3;
 
     updated[dayIndex].exercises.push({
-      // CORRIGIDO: Agora enviamos apenas a string do ID
       exerciseId: exercise._id || "",
-      sets: 3,
-      reps: 10,
+      sets,
+      reps: Array(sets).fill(0),
       order: updated[dayIndex].exercises.length,
     });
 

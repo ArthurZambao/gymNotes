@@ -21,7 +21,7 @@ export function UserCard() {
 
   return (
 
-    <div className="relative z-0 bg-zinc-900 border border-zinc-800 rounded-2xl p-6 flex flex-col md:flex-row items-center md:items-start gap-6 overflow-hidden">
+    <div className="relative z-0 bg-zinc-900 border border-zinc-800 rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row items-center md:items-start gap-4 sm:gap-6 overflow-hidden">
       {pictureMenu && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
@@ -67,10 +67,10 @@ export function UserCard() {
       <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 blur-3xl rounded-full -z-10" />
       <button
         onClick={() => setIsEditing(!isEditing)}
-        className={`cursor-pointer absolute top-4 right-4 text-[10px] sm:text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
+        className={`cursor-pointer absolute top-3 right-3 sm:top-4 sm:right-4 text-[9px] sm:text-sm font-bold transition-colors z-20 ${isEditing ? "text-zinc-500 hover:text-zinc-300" : "text-emerald-400 hover:text-emerald-300"
           }`}
       >
-        {isEditing ? "CANCELAR" : "EDITAR PERFIL"}
+        {isEditing ? "CANCELAR" : "EDITAR"}
       </button>
 
       <div className="relative w-24 h-24 md:w-20 md:h-20 shrink-0 group cursor-pointer">

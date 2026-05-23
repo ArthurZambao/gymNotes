@@ -49,7 +49,7 @@ export function CurrentWorkout() {
             Plano de Treino
           </h2>
           <div className="flex gap-4 items-center">
-            <h3 className="text-2xl font-bold text-white">
+            <h3 className="text-2xl green-shine-animation">
               {workouts[0]?.name || "Nenhum treino ativo"}
             </h3>
             {editWorkout && (
@@ -118,19 +118,18 @@ export function CurrentWorkout() {
       </div>
 
       <div className="bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden">
-        <div className="grid grid-cols-12 gap-2 sm:gap-4 p-3 sm:p-4 border-b border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider bg-zinc-900/50">
-          <div className="col-span-8">
+        <div className="grid grid-cols-[1fr_auto] sm:grid-cols-12 gap-2 sm:gap-4 p-3 sm:p-4 border-b border-zinc-800 text-xs font-bold text-zinc-500 uppercase tracking-wider bg-zinc-900/50">
+          <div className="sm:col-span-10">
             <div className="flex">
               <span className="pr-4">Exercício</span>
-              <div className="flex gap-2">
+              <div className="hidden sm:flex gap-2">
                 <span className="text-xs text-main-green flex items-center">1º</span>
                 <span className="text-xs text-yellow-400 flex items-center">2º</span>
                 <span className="text-xs text-zinc-500 flex items-center">3º</span>
               </div>
             </div>
           </div>
-          <div className="col-span-2 text-center">Séries</div>
-          <div className="col-span-2 text-center">Reps</div>
+          <div className="sm:col-span-2 text-center min-w-[3rem]">Séries</div>
         </div>
         {editedExercises.length === 0 && (
           <div className="p-6 text-center text-zinc-400">
@@ -142,8 +141,8 @@ export function CurrentWorkout() {
             const exercise = typeof t.exerciseId === "object" ? t.exerciseId : allExercises.find((ex) => ex._id === t.exerciseId);
 
             return (
-              <div key={i} className="grid grid-cols-12 gap-2 sm:gap-4 p-3 sm:p-4 items-center hover:bg-zinc-900/50 transition-colors group">
-                <div className="col-span-8">
+              <div key={i} className="grid grid-cols-[1fr_auto] sm:grid-cols-12 gap-2 sm:gap-4 p-3 sm:p-4 items-center hover:bg-zinc-900/50 transition-colors group">
+                <div className="sm:col-span-10 min-w-0">
                   <div className="font-semibold text-zinc-100 text-sm sm:text-base">{exercise?.name || "Exercício"}</div>
                   <div className="flex flex-row flex-wrap gap-1 mt-1">
                     {exercise?.muscleGroups?.map((m: MuscleGroup, idx: number) => (
@@ -159,7 +158,7 @@ export function CurrentWorkout() {
                     ))}
                   </div>
                 </div>
-                <div className="col-span-2 flex justify-center">
+                <div className="sm:col-span-2 flex justify-center items-center gap-1 sm:gap-2 min-w-[3rem]">
                   {editWorkout ? (
                     <input
                       type="number"
@@ -169,19 +168,6 @@ export function CurrentWorkout() {
                     />
                   ) : (
                     <span className="bg-zinc-800 px-2 sm:px-3 py-1 rounded text-zinc-300 font-medium text-sm">{t.sets}</span>
-                  )}
-                </div>
-
-                <div className="col-span-2 flex justify-center items-center gap-1 sm:gap-2">
-                  {editWorkout ? (
-                    <input
-                      type="number"
-                      value={Array.isArray(t.reps) ? t.reps[0] ?? '' : t.reps}
-                      onChange={(e) => handleExerciseChange(i, "reps", Number(e.target.value))}
-                      className="w-12 sm:w-16 bg-zinc-900 border border-zinc-700 rounded p-1 text-center text-white outline-none focus:border-emerald-500 text-sm"
-                    />
-                  ) : (
-                    <span className="bg-zinc-800 px-2 sm:px-3 py-1 rounded text-zinc-300 font-medium text-sm">{Array.isArray(t.reps) ? t.reps[0] : t.reps}</span>
                   )}
 
                   {editWorkout && (

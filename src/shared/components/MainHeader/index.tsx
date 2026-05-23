@@ -59,7 +59,7 @@ export function MainHeader() {
 
               {pathName === "/login" ? (
                 <Link
-                  href="/login"
+                  href="/register"
                   className="bg-emerald-500 hover:bg-emerald-600 text-zinc-950 text-sm font-bold px-5 py-2 rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]"
                 >
                   Cadastrar-se

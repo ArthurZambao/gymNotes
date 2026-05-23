@@ -57,10 +57,9 @@ export function useCalendarWorkout() {
       const initialForms = dayData.exercises.map((ex: any) => {
         const sets = ex.sets || 3;
         const existingReps = ex.reps;
-        // Ensure reps is always an array with one entry per set
-        const reps = Array.isArray(existingReps)
-          ? existingReps
-          : Array(sets).fill(existingReps || 10);
+        // Ensure reps is always an array with exactly `sets` entries
+        const baseReps = Array.isArray(existingReps) ? existingReps : [existingReps || 0];
+        const reps = Array.from({ length: sets }, (_, i) => baseReps[i] ?? baseReps[0] ?? 0);
         return {
           exerciseId: typeof ex.exerciseId === 'object' ? ex.exerciseId._id : ex.exerciseId,
           sets,

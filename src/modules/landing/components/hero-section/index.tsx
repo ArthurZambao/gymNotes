@@ -5,21 +5,8 @@ import { ArrowRight, Dumbbell } from "lucide-react";
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden pt-20">
-      {/* Luzes de fundo (Glow effect) */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-150 h-150 bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
 
-      {/* Badge / Pílula superior */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8 inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-widest"
-      >
-        <Dumbbell size={14} />
-        <span>O Futuro do seu Treino</span>
-      </motion.div>
-
-      {/* Título Principal */}
       <motion.h1
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -32,7 +19,6 @@ export function HeroSection() {
         </span>
       </motion.h1>
 
-      {/* Subtítulo */}
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -42,7 +28,6 @@ export function HeroSection() {
         Abandone as planilhas de papel. Construa, monitore e evolua seus treinos com inteligência e precisão de atleta profissional.
       </motion.p>
 
-      {/* Botões de Ação (CTA) */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

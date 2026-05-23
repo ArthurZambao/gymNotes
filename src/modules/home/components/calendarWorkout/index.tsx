@@ -38,15 +38,15 @@ export function CalendarWorkout() {
     );
   }
   return (
-    <div className="grid lg:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 gap-6">
 
-      <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-6 lg:col-span-1 flex flex-col">
-        <div className="flex justify-between items-center mb-4">
+      <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-4 sm:p-6 md:col-span-1 flex flex-col">
+        <div className="flex flex-col gap-2 mb-4">
           <h3 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest">
             Frequência
           </h3>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between">
             <button
               onClick={prevMonth}
               className="cursor-pointer p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
@@ -54,7 +54,7 @@ export function CalendarWorkout() {
               <ChevronLeft size={16} />
             </button>
 
-            <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider min-w-32 text-center">
+            <span className="text-[10px] sm:text-xs font-bold text-zinc-400 uppercase tracking-wider text-center">
               {currentDate.toLocaleString("pt-BR", { month: "long", year: "numeric" })}
             </span>
 
@@ -106,24 +106,26 @@ export function CalendarWorkout() {
         )}
 
         <div className="mt-6 flex items-center gap-2 text-xs text-zinc-500 font-semibold justify-end border-t border-zinc-800/50 pt-4">
-          <span>não foi</span>
+          <span>Não realizado</span>
           <div className="flex gap-1">
             <div className="w-3 h-3 rounded-sm bg-zinc-950"></div>
             <div className="w-3 h-3 rounded-sm bg-emerald-500/50"></div>
           </div>
-          <span>Foi</span>
+          <span>Realizado</span>
         </div>
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-6 lg:col-span-2">
+      <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-4 sm:p-6 md:col-span-2">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
             <h3 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest mb-1">
               Registro de Hoje
             </h3>
-            <span className="text-sm font-semibold text-zinc-400">
-              {selectedDate.toLocaleDateString("pt-BR", { weekday: 'long', day: '2-digit', month: 'long' })}
-            </span>
+            <div className="flex flex-col items-start gap-2">
+              <span className="text-sm font-semibold text-zinc-400">
+                {selectedDate.toLocaleDateString("pt-BR", { weekday: 'long', day: '2-digit', month: 'long' })}
+              </span>
+            </div>
           </div>
 
           {currentLog && (
@@ -153,12 +155,12 @@ export function CalendarWorkout() {
                         {getExerciseName(t.id)}
                       </td>
                       <td className="px-3 sm:px-4 py-3 text-center">
-                        <span className="bg-zinc-800 text-emerald-400 font-bold px-2 sm:px-2.5 py-1 rounded text-[10px] sm:text-xs shadow-inner">
+                        <span className="bg-zinc-800 text-emerald-400 font-bold px-2 sm:px-2.5 py-1 rounded text-[10px] sm:text-xs shadow-inner whitespace-nowrap">
                           {t.weight} {getExerciseUnit(t.id)}
                         </span>
                       </td>
                       <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
-                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">
+                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400 whitespace-nowrap">
                         {Array.isArray(t.reps) ? t.reps.join(' · ') : t.reps}
                       </td>
                     </tr>
@@ -244,7 +246,6 @@ export function CalendarWorkout() {
                           </div>
                         </div>
 
-                        {/* Reps por série - with S1/S2/S3 labels */}
                         <div className="flex flex-col">
                           <label className="text-[10px] text-zinc-500 uppercase font-bold mb-2">
                             Reps por série
