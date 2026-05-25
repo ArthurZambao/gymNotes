@@ -7,7 +7,10 @@ import { MainContent } from "../shared/components/mainContext";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
-  title: "GymNotes",
+  title: {
+    default: "GymNotes",
+    template: "GymNotes | %s",
+  },
   description: "Site para Anotações de Treino",
   icons: {
     icon: "/icons/dumbbell.svg",
@@ -33,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <MainHeader />
         <MainContent>
           {children}
-          <Toaster/>
+          <Toaster />
         </MainContent>
         <MainFooter />
       </body>

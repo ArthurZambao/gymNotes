@@ -2,7 +2,6 @@
 
 import { Check, Dumbbell, Save, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCalendarWorkout } from "../../hooks/useCalendarWorkout";
-import { WorkoutExercise } from "@/src/types/currentWorkouttypes";
 import { CurrentLog } from "@/src/types/currentLog";
 
 export function CalendarWorkout() {
@@ -72,37 +71,48 @@ export function CalendarWorkout() {
             Carregando dados...
           </div>
         ) : (
-          <div className="grid grid-cols-7 gap-1 sm:gap-1.5 flex-1 content-start">
-            {Array.from({ length: daysInMonth }).map((_, i) => {
-              const dayNumber = i + 1;
-              const dateForSquare = new Date(year, month, dayNumber);
+          <>
+            <div className="grid grid-cols-7 pb-2 gap-1 sm:gap-1.5 flex-1 text-center text-xs font-bold text-zinc-500">
+              <p>Seg</p>
+              <p>Ter</p>
+              <p>Qua</p>
+              <p>Qui</p>
+              <p>Sex</p>
+              <p>Sáb</p>
+              <p>Dom</p>
+            </div>
+            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 flex-1 content-start">
+              {Array.from({ length: daysInMonth }).map((_, i) => {
+                const dayNumber = i + 1;
+                const dateForSquare = new Date(year, month, dayNumber);
 
-              const hasLog = logsDoMes.some((log) => {
-                const ld = new Date(log.date);
-                return ld.getDate() === dayNumber;
-              });
+                const hasLog = logsDoMes.some((log) => {
+                  const ld = new Date(log.date);
+                  return ld.getDate() === dayNumber;
+                });
 
-              const isSelected = selectedDate.getDate() === dayNumber;
-              return (
-                <button
-                  key={i}
-                  onClick={() => setSelectedDate(dateForSquare)}
-                  className={`aspect-square rounded-sm flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 border
+                const isSelected = selectedDate.getDate() === dayNumber;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setSelectedDate(dateForSquare)}
+                    className={`aspect-square rounded-sm flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 border
                   ${isSelected
-                      ? "border-emerald-500 text-emerald-400 bg-zinc-950 scale-105 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-                      : "border-transparent"
-                    }
+                        ? "border-emerald-500 text-emerald-400 bg-zinc-950 scale-105 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                        : "border-transparent"
+                      }
                   ${hasLog
-                      ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/40"
-                      : !isSelected ? "bg-zinc-950 text-zinc-700 hover:bg-zinc-800" : ""
-                    }
+                        ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/40"
+                        : !isSelected ? "bg-zinc-950 text-zinc-700 hover:bg-zinc-800" : ""
+                      }
                 `}
-                >
-                  {dayNumber}
-                </button>
-              );
-            })}
-          </div>
+                  >
+                    {dayNumber}
+                  </button>
+                );
+              })}
+            </div>
+          </>
         )}
 
         <div className="mt-6 flex items-center gap-2 text-xs text-zinc-500 font-semibold justify-end border-t border-zinc-800/50 pt-4">
@@ -130,7 +140,7 @@ export function CalendarWorkout() {
 
           {currentLog && (
             <span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20 flex items-center gap-1">
-              <Check size={14} /> {currentLog.dayName} Completo
+              <Check size={14} /> Treino "{currentLog.dayName}" Completo
             </span>
           )}
         </div>
@@ -152,11 +162,11 @@ export function CalendarWorkout() {
                   {currentLog.exercises.map((t: CurrentLog, i: number) => (
                     <tr key={i} className="hover:bg-zinc-800/30 transition-colors">
                       <td className="px-3 sm:px-4 py-3 font-semibold text-zinc-200">
-                        {getExerciseName(t.id)}
+                        {getExerciseName(t.exerciseId)}
                       </td>
                       <td className="px-3 sm:px-4 py-3 text-center">
                         <span className="bg-zinc-800 text-emerald-400 font-bold px-2 sm:px-2.5 py-1 rounded text-[10px] sm:text-xs shadow-inner whitespace-nowrap">
-                          {t.weight} {getExerciseUnit(t.id)}
+                          {t.weight} {getExerciseUnit(t.exerciseId)}
                         </span>
                       </td>
                       <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
@@ -215,12 +225,9 @@ export function CalendarWorkout() {
                   <div className="space-y-3 mb-6 max-h-62.5 overflow-y-auto custom-scrollbar">
                     {exerciseForms.map((exForm, index) => (
                       <div key={index} className="flex flex-col gap-3 bg-zinc-900/50 p-3 sm:p-4 rounded-lg border border-zinc-800">
-                        {/* Exercise name - always full width */}
                         <div className="font-semibold text-zinc-200 text-sm">
                           {getExerciseName(exForm.exerciseId)}
                         </div>
-
-                        {/* Carga + Séries row */}
                         <div className="flex gap-3">
                           <div className="flex-1 flex flex-col">
                             <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">

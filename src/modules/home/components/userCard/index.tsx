@@ -39,7 +39,7 @@ export function UserCard() {
               {AVATAR_OPTIONS.map((src, i) => (
                 <button
                   key={i}
-                  onClick={() => {openPictureMenu(false); handleUpdateAvatar(src)}}
+                  onClick={() => { openPictureMenu(false); handleUpdateAvatar(src) }}
                   className="cursor-pointer w-full aspect-square rounded-full overflow-hidden border-2 border-zinc-700 hover:border-emerald-500 transition-colors"
                 >
                   <Image
@@ -75,13 +75,14 @@ export function UserCard() {
 
       <div className="relative w-24 h-24 md:w-20 md:h-20 shrink-0 group cursor-pointer">
         <Image
-          fill
+          width={96}
+          height={96}
           src={newAvatar || user.avatar || "https://github.com/shadcn.png"}
           alt="Avatar"
           className="rounded-full border-2 border-emerald-500 object-cover shadow-xl"
         />
 
-        <div onClick={() => openPictureMenu(true)} className="absolute inset-0 rounded-full bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <div onClick={() => openPictureMenu(true)} className={`flex absolute inset-0 rounded-full bg-black/50  flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200`}>
           <Camera className="w-5 h-5 text-white" />
           <span className="text-white text-[10px] font-medium mt-1">Alterar</span>
         </div>
