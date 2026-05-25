@@ -126,6 +126,7 @@ export function useCalendarWorkout() {
 
       await saveWorkoutLog(payload);
       await fetchLogs(true);
+      console.log("Treino salvo com sucesso!", payload);
     } catch (error) {
       console.error("Falha ao salvar treino", error);
       alert("Erro ao salvar o treino. Tente novamente.");
@@ -134,11 +135,10 @@ export function useCalendarWorkout() {
     }
   };
 
-  const getExerciseName = (id: string) => {
-    if (typeof id === 'object' && (id as any).name) return (id as any).name;
+  const getExerciseName = (id: string | { _id: string; name: string }) => {
+    if (typeof id === 'object' && id !== null) return id.name;
     return allExercises.find((ex) => ex._id === id)?.name || "Exercício Desconhecido";
   };
-
   const getExerciseUnit = (id: string) => {
     const exerciseId = typeof id === 'object' ? (id as any)._id : id;
     const exercise = allExercises.find((ex) => ex._id === exerciseId);

@@ -1,5 +1,5 @@
 export interface CurrentLog {
-  id: string;
+  exerciseId: string;
   sets: number;
   weight: number;
   reps: number[];
