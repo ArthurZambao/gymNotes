@@ -5,6 +5,7 @@ import { loginSchema } from "../../schemas/login-schema";
 import { useLoginForm } from "../../hook/useLoginForm";
 import Link from "next/link";
 import { Dumbbell, ArrowRight, Mail, Lock } from "lucide-react";
+import { RegisterInput } from "@/src/shared/components/formComponents/register-input";
 
 export function LoginPage() {
   const { form, errors, handleChange, handleSubmit } = useLoginForm(loginSchema);
@@ -45,48 +46,9 @@ export function LoginPage() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            <RegisterInput form={form} errors={errors} handleChange={handleChange} type="email" />
+            <RegisterInput form={form} errors={errors} handleChange={handleChange} type="password" />
 
-            {/* Email */}
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
-                Email
-              </label>
-              <div className="relative">
-                <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-                <input
-                  value={form.email}
-                  onChange={(e) => handleChange("email", e.target.value)}
-                  type="email"
-                  placeholder="seu@email.com"
-                  className="w-full h-12 pl-10 pr-4 bg-zinc-950/70 border border-zinc-800 rounded-xl text-zinc-100 placeholder:text-zinc-600 text-sm focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/30 transition-all"
-                />
-              </div>
-              {errors.email && (
-                <span className="text-red-400 text-xs">{errors.email}</span>
-              )}
-            </div>
-
-            {/* Senha */}
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
-                Senha
-              </label>
-              <div className="relative">
-                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
-                <input
-                  value={form.password}
-                  onChange={(e) => handleChange("password", e.target.value)}
-                  type="password"
-                  placeholder="••••••••"
-                  className="w-full h-12 pl-10 pr-4 bg-zinc-950/70 border border-zinc-800 rounded-xl text-zinc-100 placeholder:text-zinc-600 text-sm focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/30 transition-all"
-                />
-              </div>
-              {errors.password && (
-                <span className="text-red-400 text-xs">{errors.password}</span>
-              )}
-            </div>
-
-            {/* Botão */}
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
@@ -105,14 +67,13 @@ export function LoginPage() {
             <div className="flex-1 h-px bg-zinc-800" />
           </div>
 
-          {/* Criar conta */}
           <p className="text-center text-sm text-zinc-500">
             Não tem uma conta?{" "}
             <Link
               href="/register"
               className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
             >
-              Criar conta
+              Criar Conta
             </Link>
           </p>
         </motion.div>

@@ -47,7 +47,7 @@ export function RegisterPage() {
               Crie sua conta
             </h1>
             <p className="text-zinc-400 mt-1 text-sm">
-              Comece sua evolução agora mesmo 💪
+              Comece sua evolução agora mesmo!
             </p>
           </div>
 
