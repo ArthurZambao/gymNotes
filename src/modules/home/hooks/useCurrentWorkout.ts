@@ -16,6 +16,8 @@ export function useCurrentWorkout() {
   const [allExercises, setAllExercises] = useState<Exercise[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editWorkout, setEditWorkout] = useState(false);
+  const [afirmationOpen, setAfirationOpen] = useState(false);
+  const [deleteWorkout, setDeleteWorkout] = useState(false);
   const [exerciseMenuOpen, setExerciseMenuOpen] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState("");
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
@@ -40,13 +42,13 @@ export function useCurrentWorkout() {
 
   async function handleDeleteWorkout() {
     if (!currentWorkout) return;
+    setAfirationOpen(true);
+    if (!deleteWorkout) return;
     console.log("Deletando treino com ID:", currentWorkout._id);
     try {
       await DeleteWorkout(currentWorkout._id);
-
       const updated = await GetMyWorkouts();
       setWorkouts(updated);
-
       toast.success("Treino excluído com sucesso!");
       setEditWorkout(false);
       setSelectedDayIndex(0);
@@ -301,6 +303,10 @@ export function useCurrentWorkout() {
     handleUpdate,
     workouts,
     allExercises,
+    afirmationOpen,
+    setAfirationOpen,
+    deleteWorkout,
+    setDeleteWorkout,
     editWorkout,
     setEditWorkout,
     exerciseMenuOpen,

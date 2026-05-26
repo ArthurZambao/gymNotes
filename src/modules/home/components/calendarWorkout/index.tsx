@@ -29,17 +29,10 @@ export function CalendarWorkout() {
     nextMonth,
   } = useCalendarWorkout();
 
-  if (!activeWorkout || !activeWorkout.days) {
-    return (
-      <div className="w-full p-10 flex items-center justify-center text-zinc-500 font-bold bg-zinc-900 border border-zinc-800 rounded-2xl">
-        Você não possui nenhum treino ativo. Crie um treino para começar a registrar sua evolução!
-      </div>
-    );
-  }
   return (
     <div className="grid md:grid-cols-3 gap-6">
 
-      <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-4 sm:p-6 md:col-span-1 flex flex-col">
+      <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-4 sm:p-6 md:col-span-1 flex flex-col select-none">
         <div className="flex flex-col gap-2 mb-4">
           <h3 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest">
             Frequência
@@ -170,8 +163,8 @@ export function CalendarWorkout() {
                         </span>
                       </td>
                       <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
-                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400 whitespace-nowrap">
-                        {Array.isArray(t.reps) ? t.reps.join(' · ') : t.reps}
+                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">
+                        {Array.isArray(t.reps) ? t.reps.join(', ') : t.reps}
                       </td>
                     </tr>
                   ))}
@@ -182,123 +175,122 @@ export function CalendarWorkout() {
           ) : (
 
             <div className="p-4">
-              {!selectedWorkoutDay ? (
-                <div className="py-8 flex flex-col items-center text-center space-y-4">
-                  <Dumbbell className="text-zinc-600 mb-2" size={32} />
-                  <div>
-                    <h4 className="text-zinc-200 font-bold text-lg">Nenhum registro encontrado</h4>
-                    <p className="text-zinc-500 text-sm mb-6">Qual treino você realizou nesta data?</p>
-                  </div>
+              {activeWorkout?.days ? (
+                !selectedWorkoutDay ? (
+                  <div className="py-8 flex flex-col items-center text-center space-y-4">
+                    <Dumbbell className="text-zinc-600 mb-2" size={32} />
+                    <div>
+                      <h4 className="text-zinc-200 font-bold text-lg">Nenhum registro encontrado</h4>
+                      <p className="text-zinc-500 text-sm mb-6">Qual treino você realizou nesta data?</p>
+                    </div>
 
-                  <div className="relative w-full max-w-sm">
-                    <select
-                      className="w-full bg-zinc-900 border border-zinc-700 text-zinc-200 text-sm font-semibold rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-3 appearance-none cursor-pointer hover:border-zinc-500 transition-colors"
-                      value={selectedWorkoutDay}
-                      onChange={handleSelectWorkoutDay}
-                    >
-                      <option value="" disabled>Selecione a ficha do dia...</option>
-                      {activeWorkout?.days?.map((day: any, idx: number) => (
-                        <option key={idx} value={day.name}>
-                          {day.name}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-zinc-400">
-                      <ChevronDown size={16} />
+                    <div className="relative w-full max-w-sm">
+                      <select
+                        className="w-full bg-zinc-900 border border-zinc-700 text-zinc-200 text-sm font-semibold rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block p-3 appearance-none cursor-pointer hover:border-zinc-500 transition-colors"
+                        value={selectedWorkoutDay}
+                        onChange={handleSelectWorkoutDay}
+                      >
+                        <option value="" disabled>Selecione a ficha do dia...</option>
+                        {activeWorkout.days.map((day: any, idx: number) => (
+                          <option key={idx} value={day.name}>
+                            {day.name}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-zinc-400">
+                        <ChevronDown size={16} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                  <div className="flex items-center justify-between mb-4 px-2">
-                    <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-md">
-                      {selectedWorkoutDay}
-                    </h4>
-                    <button
-                      onClick={() => setSelectedWorkoutDay("")}
-                      className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-300 font-semibold transition-colors"
-                    >
-                      Trocar Ficha
-                    </button>
-                  </div>
+                ) : (
+                  <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                    <div className="flex items-center justify-between mb-4 px-2">
+                      <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-md">
+                        {selectedWorkoutDay}
+                      </h4>
+                      <button
+                        onClick={() => setSelectedWorkoutDay("")}
+                        className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-300 font-semibold transition-colors"
+                      >
+                        Trocar Ficha
+                      </button>
+                    </div>
 
-                  <div className="space-y-3 mb-6 max-h-62.5 overflow-y-auto custom-scrollbar">
-                    {exerciseForms.map((exForm, index) => (
-                      <div key={index} className="flex flex-col gap-3 bg-zinc-900/50 p-3 sm:p-4 rounded-lg border border-zinc-800">
-                        <div className="font-semibold text-zinc-200 text-sm">
-                          {getExerciseName(exForm.exerciseId)}
-                        </div>
-                        <div className="flex gap-3">
-                          <div className="flex-1 flex flex-col">
-                            <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">
-                              {getExerciseUnit(exForm.exerciseId) === "Pl" ? "Placas" : "Carga (kg)"}
+                    <div className="space-y-3 mb-6 max-h-62.5 overflow-y-auto custom-scrollbar">
+                      {exerciseForms.map((exForm, index) => (
+                        <div key={index} className="flex flex-col gap-3 bg-zinc-900/50 p-3 sm:p-4 rounded-lg border border-zinc-800">
+                          <div className="font-semibold text-zinc-200 text-sm">
+                            {getExerciseName(exForm.exerciseId)}
+                          </div>
+                          <div className="flex gap-3">
+                            <div className="flex-1 flex flex-col">
+                              <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">
+                                {getExerciseUnit(exForm.exerciseId) === "Pl" ? "Placas" : "Carga (kg)"}
+                              </label>
+                              <input
+                                type="number"
+                                value={exForm.weight || ''}
+                                onChange={(e) => handleFormChange(index, 'weight', e.target.value)}
+                                className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-emerald-400 font-bold outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-700"
+                                placeholder="0"
+                              />
+                            </div>
+
+                            <div className="flex-1 flex flex-col">
+                              <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Séries</label>
+                              <input
+                                type="number"
+                                value={exForm.sets || ''}
+                                onChange={(e) => handleFormChange(index, 'sets', e.target.value)}
+                                className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col">
+                            <label className="text-[10px] text-zinc-500 uppercase font-bold mb-2">
+                              Reps por série
                             </label>
-                            <input
-                              type="number"
-                              value={exForm.weight || ''}
-                              onChange={(e) => handleFormChange(index, 'weight', e.target.value)}
-                              className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-emerald-400 font-bold outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-700"
-                              placeholder="0"
-                            />
-                          </div>
-
-                          <div className="flex-1 flex flex-col">
-                            <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Séries</label>
-                            <input
-                              type="number"
-                              value={exForm.sets || ''}
-                              onChange={(e) => handleFormChange(index, 'sets', e.target.value)}
-                              className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
-                            />
+                            <div className="flex flex-wrap gap-2">
+                              {exForm.reps?.map((rep, repIndex) => (
+                                <div key={repIndex} className="flex flex-col items-center gap-1">
+                                  <span className="text-[9px] text-zinc-600 font-bold uppercase">S{repIndex + 1}</span>
+                                  <input
+                                    type="number"
+                                    value={rep || ''}
+                                    onChange={(e) => handleFormChange(index, 'reps', Number(e.target.value), repIndex)}
+                                    className="w-12 sm:w-14 bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
+                                  />
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </div>
+                      ))}
+                    </div>
 
-                        <div className="flex flex-col">
-                          <label className="text-[10px] text-zinc-500 uppercase font-bold mb-2">
-                            Reps por série
-                          </label>
-
-                          <div className="flex flex-wrap gap-2">
-                            {exForm.reps?.map((rep, repIndex) => (
-                              <div key={repIndex} className="flex flex-col items-center gap-1">
-                                <span className="text-[9px] text-zinc-600 font-bold uppercase">S{repIndex + 1}</span>
-                                <input
-                                  type="number"
-                                  value={rep || ''}
-                                  onChange={(e) =>
-                                    handleFormChange(
-                                      index,
-                                      'reps',
-                                      Number(e.target.value),
-                                      repIndex
-                                    )
-                                  }
-                                  className="w-12 sm:w-14 bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
-                                />
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    <div className="flex justify-end pt-4 border-t border-zinc-800">
+                      <button
+                        onClick={handleSaveLog}
+                        disabled={isSaving}
+                        className="cursor-pointer flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-950 font-bold px-6 py-2.5 rounded-lg transition-colors"
+                      >
+                        <Save size={18} />
+                        {isSaving ? "Salvando..." : "Salvar Treino"}
+                      </button>
+                    </div>
                   </div>
-
-                  <div className="flex justify-end pt-4 border-t border-zinc-800">
-                    <button
-                      onClick={handleSaveLog}
-                      disabled={isSaving}
-                      className="cursor-pointer flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-950 font-bold px-6 py-2.5 rounded-lg transition-colors"
-                    >
-                      <Save size={18} />
-                      {isSaving ? "Salvando..." : "Salvar Treino"}
-                    </button>
-                  </div>
+                )
+              ) : (
+                <div className="py-8 flex flex-col items-center text-center space-y-4">
+                  <p className="text-zinc-500 text-sm">Parece que você ainda não tem um treino ativo para este mês.</p>
                 </div>
               )}
             </div>
           )}
         </div>
       </div>
-    </div>
+
+    </div >
   );
 }

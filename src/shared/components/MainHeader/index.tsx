@@ -13,7 +13,7 @@ export function MainHeader() {
   const pathName = usePathname();
 
   return (
-    <header className="w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 fixed top-0 z-50 transition-all">
+    <header className="w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 fixed top-0 z-50 transition-all select-none">
       <div className="max-w-6xl mx-auto py-3 px-6 flex justify-between items-center">
 
         <Link href="/" className="flex items-center gap-2 group">

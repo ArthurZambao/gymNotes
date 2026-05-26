@@ -47,7 +47,7 @@ export function UserCard() {
                     height={64}
                     src={src}
                     alt={`Avatar ${i + 1}`}
-                    className="w-full h-full object-cover" />
+                    className="w-full h-full object-cover select-none" />
                 </button>
               ))}
             </div>
@@ -79,7 +79,7 @@ export function UserCard() {
           height={96}
           src={newAvatar || user.avatar || "https://github.com/shadcn.png"}
           alt="Avatar"
-          className="rounded-full border-2 border-emerald-500 object-cover shadow-xl"
+          className="rounded-full border-2 border-emerald-500 object-cover shadow-xl select-none"
         />
 
         <div onClick={() => openPictureMenu(true)} className={`flex absolute inset-0 rounded-full bg-black/50  flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200`}>

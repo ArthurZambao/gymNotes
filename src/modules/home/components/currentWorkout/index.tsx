@@ -11,7 +11,10 @@ export function CurrentWorkout() {
   const {
     workouts,
     editWorkout,
+    afirmationOpen,
+    setAfirationOpen,
     editedExercises,
+    setDeleteWorkout,
     allExercises,
     newWorkoutDays,
     newWorkoutName,
@@ -49,9 +52,37 @@ export function CurrentWorkout() {
             Plano de Treino
           </h2>
           <div className="flex gap-4 items-center">
-            <h3 className="text-2xl green-shine-animation">
+            <h3 className={workouts[0]?.name ? "green-shine-animation text-2xl" : "text-white opacity-10 font-extrabold tracking-widest text-lg"}>
               {workouts[0]?.name || "Nenhum treino ativo"}
             </h3>
+
+            {afirmationOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div
+                  className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                  onClick={() => setAfirationOpen(false)}
+                />
+                <div className="relative flex flex-col items-center gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl px-8 py-6 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200">
+                  <p className="text-sm font-semibold text-zinc-300 text-center">
+                    Tem certeza que deseja excluir este treino?
+                  </p>
+                  <div className="flex gap-3 w-full">
+                    <button
+                      onClick={() => { setAfirationOpen(false); setDeleteWorkout(true); }}
+                      className="cursor-pointer flex-1 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all duration-200"
+                    >
+                      Sim, excluir
+                    </button>
+                    <button
+                      onClick={() => setAfirationOpen(false)}
+                      className="cursor-pointer flex-1 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:bg-zinc-700 text-xs font-bold transition-all duration-200"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
             {editWorkout && (
               <button onClick={handleDeleteWorkout} className="cursor-pointer text-sm font-semibold text-red-500 hover:text-red-400 mt-1 transition-colors duration-300">
                 Excluir Treino
@@ -97,7 +128,6 @@ export function CurrentWorkout() {
           ))}
         </div>
 
-        {/* Botões Salvar/Editar separados */}
         <div className="flex justify-end items-center mt-2">
           {editWorkout && (
             <button
@@ -129,7 +159,7 @@ export function CurrentWorkout() {
               </div>
             </div>
           </div>
-          <div className="sm:col-span-2 text-center min-w-[3rem]">Séries</div>
+          <div className="sm:col-span-2 text-center min-w-12">Séries</div>
         </div>
         {editedExercises.length === 0 && (
           <div className="p-6 text-center text-zinc-400">
@@ -158,7 +188,7 @@ export function CurrentWorkout() {
                     ))}
                   </div>
                 </div>
-                <div className="sm:col-span-2 flex justify-center items-center gap-1 sm:gap-2 min-w-[3rem]">
+                <div className="sm:col-span-2 flex justify-center items-center gap-1 sm:gap-2 min-w-12">
                   {editWorkout ? (
                     <input
                       type="number"
