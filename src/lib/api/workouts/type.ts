@@ -10,6 +10,8 @@ export type CreateWorkoutDTO = {
       order: number;
     }[];
   }[];
+  expirationDate?: Date;
+  startDate: Date;
 };
 
 export type WorkoutResponseDTO = {
@@ -25,4 +27,6 @@ export type WorkoutResponseDTO = {
       order: number;
     }[];
   }[];
+  expirationDate?: Date;
+  startDate: Date;
 };

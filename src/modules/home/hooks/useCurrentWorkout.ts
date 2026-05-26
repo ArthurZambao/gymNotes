@@ -12,6 +12,7 @@ export function useCurrentWorkout() {
   const [newAvatar, setNewAvatar] = useState("");
   const [pictureMenu, openPictureMenu] = useState(false);
   const [newExerciseUnit, setNewExerciseUnit] = useState<"kg" | "placas">("kg");
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [workouts, setWorkouts] = useState<WorkoutResponseDTO[]>([]);
   const [allExercises, setAllExercises] = useState<Exercise[]>([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -23,6 +24,7 @@ export function useCurrentWorkout() {
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
   const [createWorkoutOpen, setCreateWorkoutOpen] = useState(false);
   const [newWorkoutName, setNewWorkoutName] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
   const [selectedMuscles, setSelectedMuscles] = useState<
     { name: string; type: "primary" | "secondary" | "tertiary" }[]
   >([]);
@@ -40,11 +42,15 @@ export function useCurrentWorkout() {
 
   // ---------------- EFFECTS ----------------
 
-  async function handleDeleteWorkout() {
+  // Abre o modal de confirmação
+  function handleDeleteWorkout() {
     if (!currentWorkout) return;
     setAfirationOpen(true);
-    if (!deleteWorkout) return;
-    console.log("Deletando treino com ID:", currentWorkout._id);
+  }
+
+  // Executa o delete após confirmação
+  async function handleConfirmDeleteWorkout() {
+    if (!currentWorkout) return;
     try {
       await DeleteWorkout(currentWorkout._id);
       const updated = await GetMyWorkouts();
@@ -52,7 +58,7 @@ export function useCurrentWorkout() {
       toast.success("Treino excluído com sucesso!");
       setEditWorkout(false);
       setSelectedDayIndex(0);
-
+      setAfirationOpen(false);
     } catch (err) {
       toast.error("Erro ao excluir treino");
     }
@@ -120,6 +126,8 @@ export function useCurrentWorkout() {
       await CreateWorkout({
         name: newWorkoutName,
         days: newWorkoutDays,
+        startDate: currentDate,
+        expirationDate: expirationDate ? new Date(expirationDate) : undefined,
       });
 
       toast.success("Treino criado");
@@ -140,21 +148,20 @@ export function useCurrentWorkout() {
       await updateUserRequest(user!.id, { avatar: picUrl });
       const stored = JSON.parse(localStorage.getItem("user") || "{}");
       localStorage.setItem("user", JSON.stringify({ ...stored, avatar: picUrl }));
-
       openPictureMenu(false);
       toast.success("Avatar atualizado com sucesso!");
       window.location.reload();
     } catch {
       toast.error("Erro ao atualizar avatar");
-    }
-  }
+    };
+  };
 
   function handleCreateWorkoutDay(dayName: string) {
     setNewWorkoutDays((prev) => [
       ...prev,
       { name: dayName, exercises: [] },
     ]);
-  }
+  };
 
   function handleAddExerciseToNewWorkout(dayIndex: number, exercise: Exercise) {
     const updated = [...newWorkoutDays];
@@ -305,8 +312,8 @@ export function useCurrentWorkout() {
     allExercises,
     afirmationOpen,
     setAfirationOpen,
-    deleteWorkout,
-    setDeleteWorkout,
+    handleDeleteWorkout,
+    handleConfirmDeleteWorkout,
     editWorkout,
     setEditWorkout,
     exerciseMenuOpen,
@@ -316,6 +323,9 @@ export function useCurrentWorkout() {
     setCreateWorkoutOpen,
     newWorkoutName,
     setNewWorkoutName,
+    expirationDate,
+    setExpirationDate,
+    currentDate,
     pictureMenu,
     openPictureMenu,
     newWorkoutDays,
@@ -341,7 +351,6 @@ export function useCurrentWorkout() {
     handleAddExerciseToNewWorkout,
     handleAddNewExercise,
     handleAddExercise,
-    handleDeleteWorkout,
     handleRemoveWorkoutDay,
     handleUpdateAvatar,
   };

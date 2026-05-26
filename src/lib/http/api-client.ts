@@ -8,8 +8,13 @@ const apiClient = setupCache(axios.create({
   ttl: 1000 * 60,
   location: 'client',
   cachePredicate: {
-    statusCheck: (status) => status >= 200 && status < 300 || status === 404,
-  }
+    statusCheck: (status) => (status >= 200 && status < 300) || status === 404,
+    responseMatch: ({ config }) => {
+      const url = config.url ?? "";
+      const authRoutes = ["/auth/login", "/auth/refresh", "/auth/logout"];
+      return !authRoutes.some(route => url.includes(route));
+    },
+  },
 });
 
 apiClient.interceptors.response.use(
@@ -26,7 +31,11 @@ apiClient.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await apiClient.post("/auth/refresh");
+        await apiClient.post("/auth/refresh", {}, { cache: false });
+
+        if (originalRequest.id) {
+          await apiClient.storage.remove(originalRequest.id);
+        }
 
         return apiClient({
           ...originalRequest,

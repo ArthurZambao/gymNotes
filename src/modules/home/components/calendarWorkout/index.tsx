@@ -30,7 +30,7 @@ export function CalendarWorkout() {
   } = useCalendarWorkout();
 
   return (
-    <div className="grid md:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 gap-6 items-start">
 
       <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-4 sm:p-6 md:col-span-1 flex flex-col select-none">
         <div className="flex flex-col gap-2 mb-4">
@@ -64,48 +64,44 @@ export function CalendarWorkout() {
             Carregando dados...
           </div>
         ) : (
-          <>
-            <div className="grid grid-cols-7 pb-2 gap-1 sm:gap-1.5 flex-1 text-center text-xs font-bold text-zinc-500">
-              <p>Seg</p>
-              <p>Ter</p>
-              <p>Qua</p>
-              <p>Qui</p>
-              <p>Sex</p>
-              <p>Sáb</p>
-              <p>Dom</p>
-            </div>
-            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 flex-1 content-start">
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const dayNumber = i + 1;
-                const dateForSquare = new Date(year, month, dayNumber);
+          <div className="grid grid-cols-7 pb-2 gap-1 sm:gap-1.5 text-center text-xs font-bold text-zinc-500">
+            <p>Seg</p>
+            <p>Ter</p>
+            <p>Qua</p>
+            <p>Qui</p>
+            <p>Sex</p>
+            <p>Sáb</p>
+            <p>Dom</p>
+            {Array.from({ length: daysInMonth }).map((_, i) => {
+              const dayNumber = i + 1;
+              const dateForSquare = new Date(year, month, dayNumber);
 
-                const hasLog = logsDoMes.some((log) => {
-                  const ld = new Date(log.date);
-                  return ld.getDate() === dayNumber;
-                });
+              const hasLog = logsDoMes.some((log) => {
+                const ld = new Date(log.date);
+                return ld.getDate() === dayNumber;
+              });
 
-                const isSelected = selectedDate.getDate() === dayNumber;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedDate(dateForSquare)}
-                    className={`aspect-square rounded-sm flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 border
+              const isSelected = selectedDate.getDate() === dayNumber;
+              return (
+                <button
+                  key={i}
+                  onClick={() => setSelectedDate(dateForSquare)}
+                  className={`aspect-square rounded-sm flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 border
                   ${isSelected
-                        ? "border-emerald-500 text-emerald-400 bg-zinc-950 scale-105 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-                        : "border-transparent"
-                      }
+                      ? "border-emerald-500 text-emerald-400 bg-zinc-950 scale-105 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                      : "border-transparent"
+                    }
                   ${hasLog
-                        ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/40"
-                        : !isSelected ? "bg-zinc-950 text-zinc-700 hover:bg-zinc-800" : ""
-                      }
+                      ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/40"
+                      : !isSelected ? "bg-zinc-950 text-zinc-700 hover:bg-zinc-800" : ""
+                    }
                 `}
-                  >
-                    {dayNumber}
-                  </button>
-                );
-              })}
-            </div>
-          </>
+                >
+                  {dayNumber}
+                </button>
+              );
+            })}
+          </div>
         )}
 
         <div className="mt-6 flex items-center gap-2 text-xs text-zinc-500 font-semibold justify-end border-t border-zinc-800/50 pt-4">

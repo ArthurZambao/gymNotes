@@ -14,11 +14,15 @@ export function CurrentWorkout() {
     afirmationOpen,
     setAfirationOpen,
     editedExercises,
-    setDeleteWorkout,
+    handleDeleteWorkout,
+    handleConfirmDeleteWorkout,
     allExercises,
     newWorkoutDays,
     newWorkoutName,
     setNewWorkoutName,
+    expirationDate,
+    setExpirationDate,
+    currentDate,
     setCreateWorkoutOpen,
     selectedDayIndex,
     createWorkoutOpen,
@@ -38,7 +42,6 @@ export function CurrentWorkout() {
     selectedMuscles,
     setSelectedMuscles,
     handleAddNewExercise,
-    handleDeleteWorkout,
     handleRemoveWorkoutDay,
     newExerciseUnit,
     setNewExerciseUnit,
@@ -48,14 +51,27 @@ export function CurrentWorkout() {
     <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-6">
       <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
         <div>
-          <h2 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest mb-1">
-            Plano de Treino
-          </h2>
+          <div className="flex items-center gap-2 mb-1">
+            <h2 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest ">
+              Plano de Treino
+            </h2>
+            {workouts[0] && (
+              <p className="flex items-center pb-1">
+                <span className="text-xs text-emerald-400 font-bold ml-2">
+                  Início: {new Date(workouts[0].startDate).toLocaleDateString("pt-BR")}
+                </span>
+                {workouts[0]?.expirationDate && (
+                  <span className="text-xs text-red-500 font-bold ml-2">
+                    Expira em: {new Date(workouts[0].expirationDate).toLocaleDateString("pt-BR")}
+                  </span>
+                )}
+              </p>
+            )}
+          </div>
           <div className="flex gap-4 items-center">
             <h3 className={workouts[0]?.name ? "green-shine-animation text-2xl" : "text-white opacity-10 font-extrabold tracking-widest text-lg"}>
               {workouts[0]?.name || "Nenhum treino ativo"}
             </h3>
-
             {afirmationOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                 <div
@@ -68,7 +84,7 @@ export function CurrentWorkout() {
                   </p>
                   <div className="flex gap-3 w-full">
                     <button
-                      onClick={() => { setAfirationOpen(false); setDeleteWorkout(true); }}
+                      onClick={handleConfirmDeleteWorkout}
                       className="cursor-pointer flex-1 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all duration-200"
                     >
                       Sim, excluir
@@ -377,13 +393,31 @@ export function CurrentWorkout() {
         <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setCreateWorkoutOpen(false)} />
 
-          {/* Mudei max-w-2xl para max-w-4xl para comportar os cards lado a lado */}
           <div className="relative bg-zinc-900 border border-zinc-800 w-full max-w-4xl rounded-2xl p-6 z-10 max-h-[90vh] overflow-y-auto shadow-2xl custom-scrollbar">
-            <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
-              <Plus className="text-emerald-500" size={24} />
-              Configurar Novo Treino
-            </h2>
+            <div className="flex sm:flex-row flex-col items-center gap-2 mb-6 justify-between">
+              <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
+                <Plus className="text-emerald-500" size={24} />
+                Configurar Novo Treino
+              </h2>
+              <div className="flex sm:flex-row flex-col gap-4 items-center">
+                <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Data de Criação</label>
+                <div
+                  className="text-center cursor-text bg-zinc-950 border border-zinc-800 py-3 rounded-lg w-full outline-none focus:border-emerald-500 transition-colors"
+                >
+                  <p>{currentDate.toLocaleDateString("pt-BR")}</p>
+                </div>
 
+                <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Data de Expiração</label>
+                <input
+                  type="date"
+                  placeholder="22/12/2024"
+                  value={expirationDate}
+                  onChange={(e) => setExpirationDate(e.target.value)}
+                  className="cursor-text bg-zinc-950 border border-zinc-800 p-3 rounded-lg w-full outline-none focus:border-emerald-500 transition-colors"
+                />
+              </div>
+
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div>
                 <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Nome da Ficha</label>
