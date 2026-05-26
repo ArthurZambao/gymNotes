@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useRegisterForm } from "../../hook/useRegisterForm";
 import { registerSchema } from "../../schema/register-schema";
-import { RegisterInput } from "@/src/shared/components/formComponents/register-input";
+import { RegisterInput } from "@/src/shared/components/formComponents/form-input";
 import Link from "next/link";
 import { Dumbbell, ArrowRight } from "lucide-react";
 

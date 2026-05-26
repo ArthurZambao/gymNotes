@@ -24,10 +24,8 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
   const [errors, setErrors] = useState<FormErrors>({});
 
   const handleChange = (field: keyof RegisterData, value: string): void => {
-    setForm((prev: RegisterData) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   const clear = () => {
@@ -35,9 +33,7 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
     setErrors({});
   };
 
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     const result = registerSchema.safeParse(form);

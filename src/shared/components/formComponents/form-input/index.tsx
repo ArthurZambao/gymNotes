@@ -24,6 +24,11 @@ export function RegisterInput<T extends FieldKey>({ form, handleChange, errors, 
 
   const resolvedType = type === "password" ? (showPassword ? "text" : "password") : inputType;
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = type === "email" ? e.target.value.toLowerCase() : e.target.value;
+    handleChange(type, value);
+  };
+
   return (
     <div className="space-y-1">
       <label className="text-xs font-bold text-zinc-400 uppercase tracking-widest">
@@ -33,16 +38,23 @@ export function RegisterInput<T extends FieldKey>({ form, handleChange, errors, 
         <Icon size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
         <input
           value={form[type] ?? ""}
-          onChange={(e) => handleChange(type, e.target.value)}
+          onChange={handleInputChange}
           type={resolvedType}
           placeholder={placeholder}
-          className="w-full h-12 pl-10 pr-10 bg-zinc-950/70 border border-zinc-800 rounded-xl text-zinc-100 placeholder:text-zinc-600 text-sm focus:outline-none focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/30 transition-all"
+          className={`
+            w-full h-12 pl-10 pr-10 rounded-xl text-zinc-100 placeholder:text-zinc-600 text-sm
+            bg-zinc-950/70 border transition-all
+            focus:outline-none focus:ring-1 focus:ring-emerald-500/30 focus:border-emerald-500/60
+            ${errors[type] ? "border-red-400" : "border-zinc-800"}
+          `}
         />
         {type === "password" && (
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 transition-colors"
+            className={`absolute right-3 top-1/2 -translate-y-1/2 transition-colors
+              ${errors[type] ? "text-red-400" : "text-zinc-500 hover:text-zinc-300"}
+            `}
             aria-label={showPassword ? "Ocultar senha" : "Ver senha"}
           >
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}

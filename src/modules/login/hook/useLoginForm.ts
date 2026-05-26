@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { LoginData, Errors } from "../schemas/login-schema";
 import { toast } from "sonner";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { loginRequest } from "@/src/lib/api/auth";
 
 export function useLoginForm(loginSchema: any) {
@@ -14,15 +14,13 @@ export function useLoginForm(loginSchema: any) {
 
   const handleChange = (field: keyof LoginData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
 
   const clear = () => {
-    setForm({
-      email: "",
-      password: "",
-    });
+    setForm({ email: "", password: "" });
     setErrors({});
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,14 +43,11 @@ export function useLoginForm(loginSchema: any) {
       const data = await loginRequest(result.data);
       localStorage.setItem("user", JSON.stringify(data.user));
       window.dispatchEvent(new Event("user-changed"));
-      console.log("LOGADO:", data);
 
       toast.success("Login bem-sucedido!");
       clear();
-      setErrors({});
       router.push("/home");
     } catch (err: any) {
-      console.log("Falha no login (401):", err.response?.data?.message);
       const errorMessage = err.response?.data?.message || "Ocorreu um erro ao fazer login.";
       toast.error(errorMessage);
     }

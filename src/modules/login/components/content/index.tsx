@@ -5,7 +5,7 @@ import { loginSchema } from "../../schemas/login-schema";
 import { useLoginForm } from "../../hook/useLoginForm";
 import Link from "next/link";
 import { Dumbbell, ArrowRight, Mail, Lock } from "lucide-react";
-import { RegisterInput } from "@/src/shared/components/formComponents/register-input";
+import { RegisterInput } from "@/src/shared/components/formComponents/form-input";
 
 export function LoginPage() {
   const { form, errors, handleChange, handleSubmit } = useLoginForm(loginSchema);
