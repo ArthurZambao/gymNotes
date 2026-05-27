@@ -16,10 +16,6 @@ export async function updateUserRequest(id: string, data: UpdateUserPayload) {
   return response.data;
 }
 
-/**
- * Alternativa: Se o seu back-end usar o token para saber 
- * quem é o usuário atual, você nem precisa passar o ID.
- */
 export async function updateMeRequest(data: UpdateUserPayload) {
   const response = await apiClient.patch("/users/me", data, {
     cache: false,
@@ -29,6 +25,11 @@ export async function updateMeRequest(data: UpdateUserPayload) {
 
 export async function registerUser(data: registerUserPayload) {
   const response = await apiClient.post("/users", data)
+  return response.data;
+}
+
+export async function getMeRequest() {
+  const response = await apiClient.get("/users/me", { cache: false });
   return response.data;
 }
 

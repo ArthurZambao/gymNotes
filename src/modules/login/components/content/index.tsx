@@ -68,7 +68,7 @@ export function LoginPage() {
             <div className="flex-1 h-px bg-zinc-800" />
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-4">
             <GoogleLoginButton />
           </div>
 
@@ -83,7 +83,6 @@ export function LoginPage() {
           </p>
         </motion.div>
 
-        {/* Rodapé */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

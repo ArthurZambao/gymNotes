@@ -55,18 +55,7 @@ export function CurrentWorkout() {
             <h2 className="text-xs text-emerald-400 uppercase font-extrabold tracking-widest ">
               Plano de Treino
             </h2>
-            {workouts[0] && (
-              <p className="flex items-center pb-1">
-                <span className="text-xs text-emerald-400 font-bold ml-2">
-                  Início: {new Date(workouts[0].startDate).toLocaleDateString("pt-BR")}
-                </span>
-                {workouts[0]?.expirationDate && (
-                  <span className="text-xs text-red-500 font-bold ml-2">
-                    Expira em: {new Date(workouts[0].expirationDate).toLocaleDateString("pt-BR")}
-                  </span>
-                )}
-              </p>
-            )}
+
           </div>
           <div className="flex gap-4 items-center">
             <h3 className={workouts[0]?.name ? "green-shine-animation text-2xl" : "text-white opacity-10 font-extrabold tracking-widest text-lg"}>
@@ -144,22 +133,37 @@ export function CurrentWorkout() {
           ))}
         </div>
 
-        <div className="flex justify-end items-center mt-2">
-          {editWorkout && (
-            <button
-              onClick={() => handleSaveWorkout()}
-              className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors text-emerald-400 hover:text-emerald-300"
-            >
-              Salvar
-            </button>
+        <div className="flex justify-between items-center mt-2">
+          {workouts[0] && (
+            <p className="flex items-center">
+              <span className="text-xs text-emerald-400 font-bold ml-2">
+                Início: {new Date(workouts[0].startDate).toLocaleDateString("pt-BR")}
+              </span>
+              {workouts[0]?.expirationDate && (
+                <span className="text-xs text-red-500 font-bold ml-2">
+                  Expira em: {new Date(workouts[0].expirationDate).toLocaleDateString("pt-BR")}
+                </span>
+              )}
+            </p>
           )}
-          <button
-            onClick={() => handleShowEditWorkout()}
-            className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${editWorkout ? "bg-red-500/10 text-red-500 hover:bg-red-500/20" : "text-zinc-400 hover:text-white"
-              }`}
-          >
-            {workouts[0]?.name ? (editWorkout ? "Cancelar Edição" : <><Edit2 size={16} /> Editar</>) : ""}
-          </button>
+
+          <div className={workouts[0] ? "flex gap-2" : "hidden"}>
+            {editWorkout && (
+              <button
+                onClick={() => handleSaveWorkout()}
+                className="cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors text-emerald-400 hover:text-emerald-300"
+              >
+                Salvar
+              </button>
+            )}
+            <button
+              onClick={() => handleShowEditWorkout()}
+              className={`cursor-pointer flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-colors ${editWorkout ? "bg-red-500/10 text-red-500 hover:bg-red-500/20" : "text-zinc-400 hover:text-white"
+                }`}
+            >
+              {workouts[0]?.name ? (editWorkout ? "Cancelar Edição" : <><Edit2 size={16} /> Editar</>) : ""}
+            </button>
+          </div>
         </div>
       </div>
 

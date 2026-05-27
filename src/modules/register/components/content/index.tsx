@@ -6,6 +6,7 @@ import { registerSchema } from "../../schema/register-schema";
 import { RegisterInput } from "@/src/shared/components/formComponents/form-input";
 import Link from "next/link";
 import { Dumbbell, ArrowRight } from "lucide-react";
+import { GoogleLoginButton } from "@/src/shared/components/googleLoginButton";
 
 export function RegisterPage() {
   const { form, errors, handleChange, handleSubmit } = useRegisterForm(registerSchema);
@@ -73,6 +74,10 @@ export function RegisterPage() {
             <div className="flex-1 h-px bg-zinc-800" />
             <span className="text-zinc-600 text-xs uppercase tracking-widest">ou</span>
             <div className="flex-1 h-px bg-zinc-800" />
+          </div>
+
+          <div className="flex justify-center mb-4">
+            <GoogleLoginButton />
           </div>
 
           {/* Login */}
