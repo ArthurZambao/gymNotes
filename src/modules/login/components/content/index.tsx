@@ -4,8 +4,9 @@ import { motion } from "framer-motion";
 import { loginSchema } from "../../schemas/login-schema";
 import { useLoginForm } from "../../hook/useLoginForm";
 import Link from "next/link";
-import { Dumbbell, ArrowRight, Mail, Lock } from "lucide-react";
+import { Dumbbell, ArrowRight } from "lucide-react";
 import { RegisterInput } from "@/src/shared/components/formComponents/form-input";
+import { GoogleLoginButton } from "@/src/shared/components/googleLoginButton";
 
 export function LoginPage() {
   const { form, errors, handleChange, handleSubmit } = useLoginForm(loginSchema);
@@ -65,6 +66,10 @@ export function LoginPage() {
             <div className="flex-1 h-px bg-zinc-800" />
             <span className="text-zinc-600 text-xs uppercase tracking-widest">ou</span>
             <div className="flex-1 h-px bg-zinc-800" />
+          </div>
+
+          <div className="flex justify-center">
+            <GoogleLoginButton />
           </div>
 
           <p className="text-center text-sm text-zinc-500">

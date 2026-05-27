@@ -23,3 +23,8 @@ export async function saveWorkoutLog(data: SaveWorkoutLogDTO) {
     throw error;
   }
 }
+
+export async function DeleteWorkoutLog(id: string) {
+  const response = await apiClient.delete(`/workout-logs/${id}`);
+  return response.data;
+}

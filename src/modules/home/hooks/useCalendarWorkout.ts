@@ -1,13 +1,15 @@
-import { getWorkoutLogsByMonth, saveWorkoutLog } from "@/src/lib/api/workoutsLog";
+import { DeleteWorkoutLog, getWorkoutLogsByMonth, saveWorkoutLog } from "@/src/lib/api/workoutsLog";
 import { ExerciseLogPayload } from "@/src/lib/api/workoutsLog/types";
 import { useState, useEffect, useMemo } from "react";
 import { useCurrentWorkout } from "./useCurrentWorkout";
+import { toast } from "sonner";
 
 
 export function useCalendarWorkout() {
   const { workouts, allExercises } = useCurrentWorkout();
   const activeWorkout = workouts[0];
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [afirmationOpen, setAfirationOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [logsDoMes, setLogsDoMes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,6 +74,26 @@ export function useCalendarWorkout() {
       setExerciseForms([]);
     }
   };
+
+  function handleDeleteWorkoutLog() {
+    if (!currentLog) return;
+    setAfirationOpen(true);
+  }
+
+  async function handleConfirmDeleteWorkoutLog() {
+    if (!currentLog) return;
+    try {
+      await DeleteWorkoutLog(currentLog._id);
+      await fetchLogs(true);
+      setAfirationOpen(false);
+      setSelectedWorkoutDay("");
+      toast.success("Registro de treino excluído com sucesso!");
+      setExerciseForms([]);
+    } catch (err) {
+      console.error("Erro ao excluir log", err);
+      toast.error("Erro ao excluir registro de treino!");
+    }
+  }
 
   const handleFormChange = (
     index: number,
@@ -169,5 +191,9 @@ export function useCalendarWorkout() {
     prevMonth,
     month,
     nextMonth,
+    afirmationOpen,
+    setAfirationOpen,
+    handleConfirmDeleteWorkoutLog,
+    handleDeleteWorkoutLog,
   };
 }

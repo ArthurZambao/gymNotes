@@ -27,6 +27,10 @@ export function CalendarWorkout() {
     prevMonth,
     month,
     nextMonth,
+    afirmationOpen,
+    setAfirationOpen,
+    handleConfirmDeleteWorkoutLog,
+    handleDeleteWorkoutLog,
   } = useCalendarWorkout();
 
   return (
@@ -114,6 +118,34 @@ export function CalendarWorkout() {
         </div>
       </div>
 
+      {afirmationOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setAfirationOpen(false)}
+          />
+          <div className="relative flex flex-col items-center gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl px-8 py-6 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200">
+            <p className="text-sm font-semibold text-zinc-300 text-center">
+              Tem certeza que deseja excluir este treino?
+            </p>
+            <div className="flex gap-3 w-full">
+              <button
+                onClick={handleConfirmDeleteWorkoutLog}
+                className="cursor-pointer flex-1 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all duration-200"
+              >
+                Sim, excluir
+              </button>
+              <button
+                onClick={() => setAfirationOpen(false)}
+                className="cursor-pointer flex-1 py-2 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:bg-zinc-700 text-xs font-bold transition-all duration-200"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="bg-zinc-900 border border-zinc-800 shadow-xl rounded-2xl p-4 sm:p-6 md:col-span-2">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
@@ -124,6 +156,14 @@ export function CalendarWorkout() {
               <span className="text-sm font-semibold text-zinc-400">
                 {selectedDate.toLocaleDateString("pt-BR", { weekday: 'long', day: '2-digit', month: 'long' })}
               </span>
+              {currentLog && (
+                <button
+                  onClick={handleDeleteWorkoutLog}
+                  className="cursor-pointer flex-1 p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all duration-200"
+                >
+                  Apagar Registro
+                </button>
+              )}
             </div>
           </div>
 
