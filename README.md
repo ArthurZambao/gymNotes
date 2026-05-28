@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GymNotes — Frontend
 
-## Getting Started
+Interface web desenvolvida com **Next.js** para o GymNotes, uma aplicação de registro e acompanhamento de treinos. Permite criar fichas de treino personalizadas, registrar logs diários de exercícios e visualizar a frequência de treinos através de um calendário interativo.
 
-First, run the development server:
+---
+
+## 🚀 Tecnologias
+
+- **[Next.js](https://nextjs.org/)** — framework React com suporte a SSR e roteamento
+- **[TypeScript](https://www.typescriptlang.org/)** — tipagem estática
+- **[Tailwind CSS](https://tailwindcss.com/)** — estilização utilitária
+- **[Lucide React](https://lucide.dev/)** — ícones
+- **[Sonner](https://sonner.emilkowal.ski/)** — notificações toast
+
+---
+
+## 📦 Instalação
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clonar o repositório
+git clone https://github.com/seu-usuario/gymnotes-frontend.git
+cd gymnotes-frontend
+
+# Instalar dependências
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Variáveis de Ambiente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Crie um arquivo `.env.local` na raiz do projeto com as seguintes variáveis:
 
-## Learn More
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ▶️ Rodando o projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Desenvolvimento
+npm run dev
 
-## Deploy on Vercel
+# Build de produção
+npm run build
+npm run start
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A aplicação sobe em `http://localhost:3001`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Certifique-se de que o backend está rodando antes de iniciar o frontend.
+
+---
+
+## 📁 Estrutura de Módulos
+
+```
+src/
+├── app/                  # Rotas e páginas (App Router)
+├── lib/
+│   ├── api/              # Chamadas à API por módulo
+│   └── http/             # Configuração do axios
+├── modules/              # Módulos por página (components + hooks)
+│   ├── home/
+│   ├── landing/
+│   ├── login/
+│   └── register/
+├── shared/               # Componentes, hooks e utils globais
+└── types/                # Tipagens globais
+```
+
+---
+
+## 🗓️ Funcionalidades
+
+### Ficha de Treino
+- Criação de fichas com múltiplos dias de treino
+- Seleção de exercícios por dia com definição de séries e repetições
+- Atualização e remoção de fichas existentes
+
+### Log de Treinos
+- Calendário interativo com navegação entre meses
+- Visualização de dias com treino registrado
+- Registro de treino por dia: peso, séries e reps por exercício
+- Edição e exclusão de registros
+
+### Performance
+- Cache local de logs por mês para evitar requisições repetidas
+- Debounce na navegação do calendário para reduzir chamadas à API
+- Invalidação automática do cache após salvar ou excluir um registro
+
+---
+
+## 🔐 Autenticação
+
+A autenticação é gerenciada via cookies `httpOnly` setados pelo backend. O frontend não armazena tokens — todas as requisições autenticadas enviam os cookies automaticamente via `credentials: include`.
+
+---
+
+## 📡 Integração com a API
+
+As chamadas à API são centralizadas em `src/lib/api/` e consomem o backend GymNotes. A URL base é configurada via variável de ambiente `NEXT_PUBLIC_API_URL`.
+
+```
+Backend repo: https://github.com/seu-usuario/gymnotes-backend
+```
+
+---
+
+## 🧱 Padrões do Projeto
+
+- **Custom hooks** para separação de lógica e UI nos componentes
+- **Cache em memória** para logs do calendário com invalidação por mutação
+- **Debounce** na navegação entre meses para controle de rate limit
+- **DTOs tipados** compartilhando a mesma estrutura do backend
+
+---
+
+Made with 💚 by **Arthur Zambão**
