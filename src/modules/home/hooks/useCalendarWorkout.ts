@@ -1,9 +1,10 @@
 import { DeleteWorkoutLog, getWorkoutLogsByMonth, saveWorkoutLog } from "@/src/lib/api/workoutsLog";
 import { ExerciseLogPayload } from "@/src/lib/api/workoutsLog/types";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useCurrentWorkout } from "./useCurrentWorkout";
 import { toast } from "sonner";
 
+const logsCache = new Map<string, any[]>();
 
 export function useCalendarWorkout() {
   const { workouts, allExercises } = useCurrentWorkout();
@@ -20,17 +21,38 @@ export function useCalendarWorkout() {
   const month = currentDate.getMonth();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const mesAtualStr = `${year}-${String(month + 1).padStart(2, "0")}`;
+  const fetchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const fetchLogs = async (noCache = false) => {
+    if (!noCache && logsCache.has(mesAtualStr)) {
+      setLogsDoMes(logsCache.get(mesAtualStr)!);
+      return;
+    }
+
     setIsLoading(true);
     const data = await getWorkoutLogsByMonth(mesAtualStr, noCache);
-    setLogsDoMes(data || []);
+    const result = data || [];
+
+    logsCache.set(mesAtualStr, result);
+    setLogsDoMes(result);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchLogs();
-  }, [mesAtualStr]);
+    if (logsCache.has(mesAtualStr)) {
+      setLogsDoMes(logsCache.get(mesAtualStr)!);
+      return;
+    }
+    if (fetchTimeoutRef.current) {
+      clearTimeout(fetchTimeoutRef.current);
+    }
+    fetchTimeoutRef.current = setTimeout(() => {
+      fetchLogs();
+    }, 400);
+    return () => {
+      if (fetchTimeoutRef.current) clearTimeout(fetchTimeoutRef.current);
+    };
+  }, [mesAtualStr]);;
 
   const currentLog = useMemo(() => {
     return logsDoMes.find((log) => {

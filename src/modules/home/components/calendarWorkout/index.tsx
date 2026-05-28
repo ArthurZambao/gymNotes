@@ -10,7 +10,6 @@ export function CalendarWorkout() {
     selectedDate,
     setSelectedDate,
     logsDoMes,
-    isLoading,
     selectedWorkoutDay,
     setSelectedWorkoutDay,
     exerciseForms,
@@ -63,51 +62,45 @@ export function CalendarWorkout() {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex-1 flex justify-center items-center text-zinc-500 text-sm font-semibold">
-            Carregando dados...
-          </div>
-        ) : (
-          <div className="grid grid-cols-7 pb-2 gap-1 sm:gap-1.5 text-center text-xs font-bold text-zinc-500">
-            <p>Seg</p>
-            <p>Ter</p>
-            <p>Qua</p>
-            <p>Qui</p>
-            <p>Sex</p>
-            <p>Sáb</p>
-            <p>Dom</p>
-            {Array.from({ length: daysInMonth }).map((_, i) => {
-              const dayNumber = i + 1;
-              const dateForSquare = new Date(year, month, dayNumber);
 
-              const hasLog = logsDoMes.some((log) => {
-                const ld = new Date(log.date);
-                return ld.getDate() === dayNumber;
-              });
+        <div className="grid grid-cols-7 pb-2 gap-1 sm:gap-1.5 text-center text-xs font-bold text-zinc-500">
+          <p>Seg</p>
+          <p>Ter</p>
+          <p>Qua</p>
+          <p>Qui</p>
+          <p>Sex</p>
+          <p>Sáb</p>
+          <p>Dom</p>
+          {Array.from({ length: daysInMonth }).map((_, i) => {
+            const dayNumber = i + 1;
+            const dateForSquare = new Date(year, month, dayNumber);
 
-              const isSelected = selectedDate.getDate() === dayNumber;
-              return (
-                <button
-                  key={i}
-                  onClick={() => setSelectedDate(dateForSquare)}
-                  className={`aspect-square rounded-sm flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 border
+            const hasLog = logsDoMes.some((log) => {
+              const ld = new Date(log.date);
+              return ld.getDate() === dayNumber;
+            });
+
+            const isSelected = selectedDate.getDate() === dayNumber;
+            return (
+              <button
+                key={i}
+                onClick={() => setSelectedDate(dateForSquare)}
+                className={`aspect-square rounded-sm flex items-center justify-center text-[10px] font-bold transition-all cursor-pointer hover:scale-110 border
                   ${isSelected
-                      ? "border-emerald-500 text-emerald-400 bg-zinc-950 scale-105 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
-                      : "border-transparent"
-                    }
+                    ? "border-emerald-500 text-emerald-400 bg-zinc-950 scale-105 shadow-[0_0_10px_rgba(16,185,129,0.2)]"
+                    : "border-transparent"
+                  }
                   ${hasLog
-                      ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/40"
-                      : !isSelected ? "bg-zinc-950 text-zinc-700 hover:bg-zinc-800" : ""
-                    }
+                    ? "bg-emerald-500/20 text-emerald-500 hover:bg-emerald-500/40"
+                    : !isSelected ? "bg-zinc-950 text-zinc-700 hover:bg-zinc-800" : ""
+                  }
                 `}
-                >
-                  {dayNumber}
-                </button>
-              );
-            })}
-          </div>
-        )}
-
+              >
+                {dayNumber}
+              </button>
+            );
+          })}
+        </div>
         <div className="mt-6 flex items-center gap-2 text-xs text-zinc-500 font-semibold justify-end border-t border-zinc-800/50 pt-4">
           <span>Não realizado</span>
           <div className="flex gap-1">
