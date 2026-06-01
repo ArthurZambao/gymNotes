@@ -33,6 +33,8 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
     setErrors({});
   };
 
+  // useRegisterForm.ts — só o handleSubmit muda
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
@@ -50,9 +52,13 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
 
     try {
       await registerUser(result.data);
-      toast.success("Conta criada com sucesso!");
       clear();
-      router.push("/login");
+      toast.success("Conta criada! Verifique seu email para ativar a conta.", {
+        duration: 6000,
+      });
+
+      router.push("/login?verify=true");
+
     } catch (err) {
       const errorMessage = axios.isAxiosError(err)
         ? err.response?.data?.message ?? "Erro ao criar conta."

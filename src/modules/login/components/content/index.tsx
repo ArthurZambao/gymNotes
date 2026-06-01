@@ -38,7 +38,9 @@ export function LoginPage() {
           {/* Header do card */}
           <div className="mb-8">
             <h1 className="text-2xl font-extrabold text-zinc-100 tracking-tight wrap-break-word">
-              Bem-vindo <span className="green-shine-animation">{form.email.slice(0, form.email.indexOf("@")) + " !" || ""}</span>
+              Bem-vindo <span className="green-shine-animation">
+                {form.email.includes("@") ? form.email.slice(0, form.email.indexOf("@")) + "!" : ""}
+              </span>
             </h1>
             <p className="text-zinc-400 mt-1 text-sm">
               Continue sua evolução

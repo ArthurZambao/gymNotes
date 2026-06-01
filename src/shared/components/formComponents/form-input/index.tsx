@@ -52,7 +52,7 @@ export function RegisterInput<T extends FieldKey>({ form, handleChange, errors, 
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
-            className={`absolute right-3 top-1/2 -translate-y-1/2 transition-colors
+            className={`cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 transition-colors
               ${errors[type] ? "text-red-400" : "text-zinc-500 hover:text-zinc-300"}
             `}
             aria-label={showPassword ? "Ocultar senha" : "Ver senha"}

@@ -43,7 +43,10 @@ apiClient.interceptors.response.use(
         });
       } catch {
         localStorage.removeItem("user");
-        window.location.href = "/login";
+        const publicRoutes = ["/login", "/register", "/", "/landing"];
+        if (typeof window !== "undefined" && !publicRoutes.includes(window.location.pathname)) {
+          window.location.href = "/login";
+        }
       }
     }
     return Promise.reject(error);
