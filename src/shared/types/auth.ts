@@ -4,6 +4,7 @@ export interface User {
   email: string;
   weight: number;
   height: number;
+  biotype?: string;
   avatar: string;
 }
 
