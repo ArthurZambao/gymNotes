@@ -2,7 +2,7 @@ import axios from 'axios';
 import { setupCache } from 'axios-cache-interceptor';
 
 const apiClient = setupCache(axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: '/api',
   withCredentials: true,
 }), {
   ttl: 1000 * 60,
