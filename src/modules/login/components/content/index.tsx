@@ -35,7 +35,6 @@ export function LoginPage() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="bg-zinc-900/60 backdrop-blur-md border border-zinc-800 rounded-2xl p-8 shadow-[0_0_60px_rgba(0,0,0,0.5)]"
         >
-          {/* Header do card */}
           <div className="mb-8">
             <h1 className="text-2xl font-extrabold text-zinc-100 tracking-tight wrap-break-word">
               Bem-vindo <span className="green-shine-animation">
@@ -47,7 +46,6 @@ export function LoginPage() {
             </p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <RegisterInput form={form} errors={errors} handleChange={handleChange} type="email" />
             <RegisterInput form={form} errors={errors} handleChange={handleChange} type="password" />
@@ -63,7 +61,6 @@ export function LoginPage() {
             </motion.button>
           </form>
 
-          {/* Divisor */}
           <div className="my-6 flex items-center gap-3">
             <div className="flex-1 h-px bg-zinc-800" />
             <span className="text-zinc-600 text-xs uppercase tracking-widest">ou</span>
@@ -76,10 +73,7 @@ export function LoginPage() {
 
           <p className="text-center text-sm text-zinc-500">
             Não tem uma conta?{" "}
-            <Link
-              href="/register"
-              className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
-            >
+            <Link href="/register" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors">
               Criar Conta
             </Link>
           </p>

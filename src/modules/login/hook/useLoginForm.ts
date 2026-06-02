@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoginData, Errors } from "../schemas/login-schema";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { loginRequest } from "@/src/lib/api/auth";
 
 export function useLoginForm(loginSchema: any) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const justRegistered = searchParams.get("verify") === "true";
+  const verified = searchParams.get("verified");
   const [errors, setErrors] = useState<Errors>({});
   const [form, setForm] = useState<LoginData>({
     email: "",
@@ -16,6 +19,14 @@ export function useLoginForm(loginSchema: any) {
     setForm((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => ({ ...prev, [field]: undefined }));
   };
+
+  useEffect(() => {
+    if (verified === "false") {
+      toast.error("Link de verificação inválido ou expirado.");
+    } else if (verified === "true") {
+      toast.success("Email verificado com sucesso! Agora você pode fazer login.");
+    }
+  }, [verified]);
 
   const clear = () => {
     setForm({ email: "", password: "" });

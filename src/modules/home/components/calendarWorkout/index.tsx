@@ -152,7 +152,7 @@ export function CalendarWorkout() {
               {currentLog && (
                 <button
                   onClick={handleDeleteWorkoutLog}
-                  className="cursor-pointer flex-1 p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all duration-200"
+                  className="cursor-pointer flex-1 rounded-lg text-red-400 text-xs font-bold transition-all duration-200"
                 >
                   Apagar Registro
                 </button>
@@ -170,36 +170,67 @@ export function CalendarWorkout() {
         <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950">
 
           {currentLog ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs sm:text-sm text-left">
-                <thead className="bg-zinc-900/80 text-zinc-500 text-[10px] sm:text-xs uppercase font-bold tracking-wider border-b border-zinc-800">
-                  <tr>
-                    <th className="px-3 sm:px-4 py-3">Exercício</th>
-                    <th className="px-3 sm:px-4 py-3 text-center w-16 sm:w-24">Carga</th>
-                    <th className="px-3 sm:px-4 py-3 text-center w-14 sm:w-20">Séries</th>
-                    <th className="px-3 sm:px-4 py-3 text-center w-14 sm:w-20">Reps</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-zinc-800/50">
-                  {currentLog.exercises.map((t: CurrentLog, i: number) => (
-                    <tr key={i} className="hover:bg-zinc-800/30 transition-colors">
-                      <td className="px-3 sm:px-4 py-3 font-semibold text-zinc-200">
-                        {getExerciseName(t.exerciseId)}
-                      </td>
-                      <td className="px-3 sm:px-4 py-3 text-center">
-                        <span className="bg-zinc-800 text-emerald-400 font-bold px-2 sm:px-2.5 py-1 rounded text-[10px] sm:text-xs shadow-inner whitespace-nowrap">
+            <div className="w-full">
+              {/* Layout para Desktop (Tabela) */}
+              <div className="hidden sm:block overflow-x-auto">
+                <table className="w-full text-xs sm:text-sm text-left">
+                  <thead className="bg-zinc-900/80 text-zinc-500 text-[10px] sm:text-xs uppercase font-bold tracking-wider border-b border-zinc-800">
+                    <tr>
+                      <th className="px-3 sm:px-4 py-3">Exercício</th>
+                      <th className="px-3 sm:px-4 py-3 text-center w-16 sm:w-24">Carga</th>
+                      <th className="px-3 sm:px-4 py-3 text-center w-14 sm:w-20">Séries</th>
+                      <th className="px-3 sm:px-4 py-3 text-center w-14 sm:w-20">Reps</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-800/50">
+                    {currentLog.exercises.map((t: CurrentLog, i: number) => (
+                      <tr key={i} className="hover:bg-zinc-800/30 transition-colors">
+                        <td className="px-3 sm:px-4 py-3 font-semibold text-zinc-200">
+                          {getExerciseName(t.exerciseId)}
+                        </td>
+                        <td className="px-3 sm:px-4 py-3 text-center">
+                          <span className="bg-zinc-800 text-emerald-400 font-bold px-2 sm:px-2.5 py-1 rounded text-[10px] sm:text-xs shadow-inner whitespace-nowrap">
+                            {t.weight} {getExerciseUnit(t.exerciseId)}
+                          </span>
+                        </td>
+                        <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
+                        <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">
+                          {Array.isArray(t.reps) ? t.reps.join(', ') : t.reps}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Layout para Mobile (Cards) */}
+              <div className="sm:hidden flex flex-col divide-y divide-zinc-800/50">
+                {currentLog.exercises.map((t: CurrentLog, i: number) => (
+                  <div key={i} className="p-4 flex flex-col gap-3 hover:bg-zinc-800/30 transition-colors">
+                    <div className="font-semibold text-zinc-200 text-sm">
+                      {getExerciseName(t.exerciseId)}
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2">
+                        <span className="text-zinc-500 uppercase font-bold tracking-wider">Carga:</span>
+                        <span className="bg-zinc-800 text-emerald-400 font-bold px-2 py-1 rounded shadow-inner whitespace-nowrap">
                           {t.weight} {getExerciseUnit(t.exerciseId)}
                         </span>
-                      </td>
-                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">{t.sets}</td>
-                      <td className="px-3 sm:px-4 py-3 text-center font-medium text-zinc-400">
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-zinc-500 uppercase font-bold tracking-wider">Séries:</span>
+                        <span className="text-zinc-300 font-medium">{t.sets}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 text-xs">
+                      <span className="text-zinc-500 uppercase font-bold tracking-wider mt-0.5">Reps:</span>
+                      <span className="text-zinc-300 font-medium flex-1">
                         {Array.isArray(t.reps) ? t.reps.join(', ') : t.reps}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-
-              </table>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ) : (
 
@@ -233,45 +264,45 @@ export function CalendarWorkout() {
                   </div>
                 ) : (
                   <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    <div className="flex items-center justify-between mb-4 px-2">
-                      <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-md">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 px-2">
+                      <h4 className="text-sm font-bold text-emerald-400 uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-md max-w-full truncate">
                         {selectedWorkoutDay}
                       </h4>
                       <button
                         onClick={() => setSelectedWorkoutDay("")}
-                        className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-300 font-semibold transition-colors"
+                        className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-300 font-semibold transition-colors shrink-0"
                       >
                         Trocar Ficha
                       </button>
                     </div>
 
-                    <div className="space-y-3 mb-6 max-h-62.5 overflow-y-auto custom-scrollbar">
+                    <div className="space-y-3 mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar">
                       {exerciseForms.map((exForm, index) => (
                         <div key={index} className="flex flex-col gap-3 bg-zinc-900/50 p-3 sm:p-4 rounded-lg border border-zinc-800">
                           <div className="font-semibold text-zinc-200 text-sm">
                             {getExerciseName(exForm.exerciseId)}
                           </div>
                           <div className="flex gap-3">
-                            <div className="flex-1 flex flex-col">
-                              <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">
+                            <div className="flex-1 flex flex-col min-w-0">
+                              <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1 truncate">
                                 {getExerciseUnit(exForm.exerciseId) === "Pl" ? "Placas" : "Carga (kg)"}
                               </label>
                               <input
                                 type="number"
                                 value={exForm.weight || ''}
                                 onChange={(e) => handleFormChange(index, 'weight', e.target.value)}
-                                className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-emerald-400 font-bold outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-700"
+                                className="w-full bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-emerald-400 font-bold outline-none focus:border-emerald-500 transition-colors placeholder:text-zinc-700"
                                 placeholder="0"
                               />
                             </div>
 
-                            <div className="flex-1 flex flex-col">
-                              <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1">Séries</label>
+                            <div className="flex-1 flex flex-col min-w-0">
+                              <label className="text-[10px] text-zinc-500 uppercase font-bold mb-1 truncate">Séries</label>
                               <input
                                 type="number"
                                 value={exForm.sets || ''}
                                 onChange={(e) => handleFormChange(index, 'sets', e.target.value)}
-                                className="bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
+                                className="w-full bg-zinc-950 border border-zinc-700 rounded p-1.5 text-center text-white outline-none focus:border-zinc-500 transition-colors"
                               />
                             </div>
                           </div>

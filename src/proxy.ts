@@ -8,7 +8,7 @@ export function proxy(request: NextRequest) {
   const isAuthPage = pathname === '/login' || pathname === '/register';
   const isHomePage = pathname === '/home' || pathname === '/';
 
-  // Lógica de Redirecionamento
+
   if (isHomePage && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
@@ -20,7 +20,7 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-// O matcher continua sendo exportado separadamente
+
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

@@ -35,7 +35,7 @@ export function UserCard() {
               Alterar Avatar
             </h2>
 
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {AVATAR_OPTIONS.map((src, i) => (
                 <button
                   key={i}

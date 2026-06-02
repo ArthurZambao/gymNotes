@@ -133,18 +133,18 @@ export function CurrentWorkout() {
           ))}
         </div>
 
-        <div className="flex justify-between items-center mt-2">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-0 sm:justify-between items-start sm:items-center mt-3">
           {workouts[0] && (
-            <p className="flex items-center">
-              <span className="text-xs text-emerald-400 font-bold ml-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2">
+              <span className="text-xs text-emerald-400 font-bold">
                 Início: {new Date(workouts[0].startDate).toLocaleDateString("pt-BR")}
               </span>
               {workouts[0]?.expirationDate && (
-                <span className="text-xs text-red-500 font-bold ml-2">
+                <span className="text-xs text-red-500 font-bold">
                   Expira em: {new Date(workouts[0].expirationDate).toLocaleDateString("pt-BR")}
                 </span>
               )}
-            </p>
+            </div>
           )}
 
           <div className={workouts[0] ? "flex gap-2" : "hidden"}>
@@ -403,22 +403,26 @@ export function CurrentWorkout() {
                 <Plus className="text-emerald-500" size={24} />
                 Configurar Novo Treino
               </h2>
-              <div className="flex sm:flex-row flex-col gap-4 items-center">
-                <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Data de Criação</label>
-                <div
-                  className="text-center cursor-text bg-zinc-950 border border-zinc-800 py-3 rounded-lg w-full outline-none focus:border-emerald-500 transition-colors"
-                >
-                  <p>{currentDate.toLocaleDateString("pt-BR")}</p>
+              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full sm:w-auto">
+                <div className="w-full sm:w-auto">
+                  <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Data de Criação</label>
+                  <div
+                    className="text-center cursor-text bg-zinc-950 border border-zinc-800 py-3 px-4 rounded-lg w-full outline-none focus:border-emerald-500 transition-colors"
+                  >
+                    <p>{currentDate.toLocaleDateString("pt-BR")}</p>
+                  </div>
                 </div>
 
-                <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Data de Expiração</label>
-                <input
-                  type="date"
-                  placeholder="22/12/2024"
-                  value={expirationDate}
-                  onChange={(e) => setExpirationDate(e.target.value)}
-                  className="cursor-text bg-zinc-950 border border-zinc-800 p-3 rounded-lg w-full outline-none focus:border-emerald-500 transition-colors"
-                />
+                <div className="w-full sm:w-auto">
+                  <label className="text-xs text-zinc-400 font-bold uppercase mb-1 block">Data de Expiração</label>
+                  <input
+                    type="date"
+                    placeholder="22/12/2024"
+                    value={expirationDate}
+                    onChange={(e) => setExpirationDate(e.target.value)}
+                    className="cursor-text bg-zinc-950 border border-zinc-800 p-3 rounded-lg w-full outline-none focus:border-emerald-500 transition-colors"
+                  />
+                </div>
               </div>
 
             </div>

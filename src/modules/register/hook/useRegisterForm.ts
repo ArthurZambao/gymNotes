@@ -33,7 +33,7 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
     setErrors({});
   };
 
-  // useRegisterForm.ts — só o handleSubmit muda
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();

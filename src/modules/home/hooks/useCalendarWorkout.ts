@@ -22,6 +22,7 @@ export function useCalendarWorkout() {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const mesAtualStr = `${year}-${String(month + 1).padStart(2, "0")}`;
   const fetchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const draftKey = `workout-draft:${selectedDate.toISOString().split('T')[0]}`;
 
   const fetchLogs = async (noCache = false) => {
     if (!noCache && logsCache.has(mesAtualStr)) {
@@ -67,10 +68,23 @@ export function useCalendarWorkout() {
 
   useEffect(() => {
     if (!currentLog) {
-      setSelectedWorkoutDay("");
-      setExerciseForms([]);
+      const saved = localStorage.getItem(draftKey);
+      if (saved) {
+        const { selectedWorkoutDay: day, exerciseForms: forms } = JSON.parse(saved);
+        setSelectedWorkoutDay(day);
+        setExerciseForms(forms);
+      } else {
+        setSelectedWorkoutDay("");
+        setExerciseForms([]);
+      }
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (!selectedWorkoutDay || exerciseForms.length === 0) return;
+    const draft = { selectedWorkoutDay, exerciseForms };
+    localStorage.setItem(draftKey, JSON.stringify(draft));
+  }, [exerciseForms, selectedWorkoutDay, draftKey]);
 
   const handleSelectWorkoutDay = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const dayName = e.target.value;
@@ -81,7 +95,7 @@ export function useCalendarWorkout() {
       const initialForms = dayData.exercises.map((ex: any) => {
         const sets = ex.sets || 3;
         const existingReps = ex.reps;
-        // Ensure reps is always an array with exactly `sets` entries
+
         const baseReps = Array.isArray(existingReps) ? existingReps : [existingReps || 0];
         const reps = Array.from({ length: sets }, (_, i) => baseReps[i] ?? baseReps[0] ?? 0);
         return {
@@ -106,6 +120,7 @@ export function useCalendarWorkout() {
     if (!currentLog) return;
     try {
       await DeleteWorkoutLog(currentLog._id);
+      localStorage.removeItem(draftKey);
       await fetchLogs(true);
       setAfirationOpen(false);
       setSelectedWorkoutDay("");
@@ -169,6 +184,7 @@ export function useCalendarWorkout() {
       };
 
       await saveWorkoutLog(payload);
+      localStorage.removeItem(draftKey);
       await fetchLogs(true);
       console.log("Treino salvo com sucesso!", payload);
     } catch (error) {

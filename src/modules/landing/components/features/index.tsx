@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Activity, BarChart3, Users } from "lucide-react"; // Importe os ícones que fazem sentido
+import { Activity, BarChart3, Users } from "lucide-react";
 
 export function Features() {
   const featuresList = [

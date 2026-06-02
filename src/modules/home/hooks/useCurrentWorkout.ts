@@ -40,15 +40,15 @@ export function useCurrentWorkout() {
   const editedExercises = currentDay?.exercises || [];
   const canAddExercise = currentWorkout?.days?.length > 0;
 
-  // ---------------- EFFECTS ----------------
 
-  // Abre o modal de confirmação
+
+
   function handleDeleteWorkout() {
     if (!currentWorkout) return;
     setAfirationOpen(true);
   }
 
-  // Executa o delete após confirmação
+
   async function handleConfirmDeleteWorkout() {
     if (!currentWorkout) return;
     try {
@@ -114,7 +114,7 @@ export function useCurrentWorkout() {
     }
   }, [user]);
 
-  // ---------------- CREATE WORKOUT ----------------
+
 
   async function handleCreateWorkout() {
     try {
@@ -191,7 +191,7 @@ export function useCurrentWorkout() {
     setWorkouts(updated);
   }
 
-  // ---------------- WORKOUT EDIT ----------------
+
 
   function handleRemoveExercise(index: number) {
     const updated = [...workouts];
@@ -238,7 +238,7 @@ export function useCurrentWorkout() {
     if (field === "sets") {
       exercise.sets = value;
 
-      // ajusta o tamanho do array reps
+
       exercise.reps = Array(value).fill(
         exercise.reps?.[0] || 10
       );
@@ -262,7 +262,7 @@ export function useCurrentWorkout() {
     }
   }
 
-  // ---------------- UI CONTROLS FALTANTES ----------------
+
 
   function handleExerciseList() {
     setExerciseMenuOpen(true);
@@ -272,7 +272,7 @@ export function useCurrentWorkout() {
     setEditWorkout(!editWorkout);
   }
 
-  // ---------------- EXERCISE ----------------
+
 
   async function handleAddNewExercise(e: React.FormEvent) {
     e.preventDefault();
@@ -297,7 +297,7 @@ export function useCurrentWorkout() {
     }
   }
 
-  // ---------------- RETURN ----------------
+
 
   return {
     user,
