@@ -9,9 +9,11 @@ export function useLoginForm(loginSchema: any) {
   const searchParams = useSearchParams();
   const justRegistered = searchParams.get("verify") === "true";
   const verified = searchParams.get("verified");
+  const emailParam = searchParams.get("email") || "";
+  const alreadyExists = searchParams.get("exists") === "true";
   const [errors, setErrors] = useState<Errors>({});
   const [form, setForm] = useState<LoginData>({
-    email: "",
+    email: emailParam,
     password: "",
   });
 
@@ -26,7 +28,11 @@ export function useLoginForm(loginSchema: any) {
     } else if (verified === "true") {
       toast.success("Email verificado com sucesso! Agora você pode fazer login.");
     }
-  }, [verified]);
+    
+    if (alreadyExists) {
+      toast.info("Este e-mail já está cadastrado. Faça login para continuar.");
+    }
+  }, [verified, alreadyExists]);
 
   const clear = () => {
     setForm({ email: "", password: "" });

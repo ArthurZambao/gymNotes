@@ -5,12 +5,15 @@ import { useUser } from "../../hooks/useUser";
 import { Dumbbell, LogOut } from "lucide-react";
 import { useLogout } from "../../hooks/useLogout";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 
 
 export function MainHeader() {
   const user = useUser();
   const logout = useLogout();
   const pathName = usePathname();
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
 
   return (
     <header className="w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800 fixed top-0 z-50 transition-all select-none">
@@ -42,12 +45,44 @@ export function MainHeader() {
                 </span>
 
                 <button
-                  onClick={logout}
+                  onClick={() => setLogoutModalOpen(true)}
                   className="cursor-pointer flex items-center gap-2 text-sm font-bold text-zinc-400 hover:text-red-500 transition-colors bg-zinc-900/50 hover:bg-red-500/10 px-3 py-1.5 rounded-lg border border-zinc-800 hover:border-red-500/30"
                 >
                   <LogOut size={16} />
                   <span className="hidden sm:inline">Sair</span>
                 </button>
+
+                {logoutModalOpen && typeof document !== "undefined" && createPortal(
+                  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                    <div
+                      className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                      onClick={() => setLogoutModalOpen(false)}
+                    />
+                    <div className="relative flex flex-col items-center gap-4 bg-zinc-900 border border-zinc-800 rounded-2xl px-8 py-6 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200">
+                      <p className="text-sm font-semibold text-zinc-300 text-center">
+                        Tem certeza que deseja sair da sua conta?
+                      </p>
+                      <div className="flex gap-3 w-full">
+                        <button
+                          onClick={() => {
+                            setLogoutModalOpen(false);
+                            logout();
+                          }}
+                          className="cursor-pointer flex-1 py-2 px-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold transition-all duration-200 whitespace-nowrap"
+                        >
+                          Sim, sair
+                        </button>
+                        <button
+                          onClick={() => setLogoutModalOpen(false)}
+                          className="cursor-pointer flex-1 py-2 px-4 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:bg-zinc-700 text-xs font-bold transition-all duration-200"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    </div>
+                  </div>,
+                  document.body
+                )}
               </div>
             </>
           ) : (

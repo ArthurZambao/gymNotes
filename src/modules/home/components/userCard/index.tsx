@@ -7,7 +7,7 @@ import { Camera } from "lucide-react";
 import { AVATAR_OPTIONS } from "@/src/shared/constants/avatar";
 
 export function UserCard() {
-  const { user, isEditing, setIsEditing, weight, setWeight, height, setHeight, handleUpdate, pictureMenu, openPictureMenu, newAvatar, handleUpdateAvatar } = useCurrentWorkout();
+  const { user, isEditing, setIsEditing, weight, setWeight, height, setHeight, name, setName, biotype, setBiotype, handleUpdate, pictureMenu, openPictureMenu, newAvatar, handleUpdateAvatar } = useCurrentWorkout();
 
   if (!user) {
     return (
@@ -89,7 +89,16 @@ export function UserCard() {
       </div>
 
       <div className="flex-1 w-full text-center md:text-left">
-        <h2 className="text-2xl font-extrabold text-white tracking-tight leading-tight">{user.name}</h2>
+        {isEditing ? (
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="text-2xl font-extrabold text-emerald-400 tracking-tight leading-tight bg-zinc-950/50 border border-emerald-500/30 focus:border-emerald-500 rounded-lg px-2 py-1 outline-none w-full sm:w-auto md:text-left text-center transition-colors"
+          />
+        ) : (
+          <h2 className="text-2xl font-extrabold text-white tracking-tight leading-tight">{user.name}</h2>
+        )}
         <p className="text-zinc-400 text-sm mb-4">{user.email}</p>
 
         {isEditing ? (
@@ -114,6 +123,20 @@ export function UserCard() {
                 className="bg-transparent text-white w-full sm:w-16 outline-none text-right"
               />
               <span className="text-zinc-500 text-sm">cm</span>
+            </div>
+
+            <div className="flex items-center gap-2 bg-zinc-950 px-3 py-2 rounded-lg border border-zinc-800 w-full sm:w-auto">
+              <span className="text-zinc-500 text-sm">Biotipo</span>
+              <select
+                value={biotype}
+                onChange={(e) => setBiotype(e.target.value)}
+                className="bg-transparent text-white w-full sm:w-auto outline-none text-right cursor-pointer"
+              >
+                <option value="" className="bg-zinc-900 text-zinc-400">--</option>
+                <option value="Ectomorfo" className="bg-zinc-900">Ectomorfo</option>
+                <option value="Mesomorfo" className="bg-zinc-900">Mesomorfo</option>
+                <option value="Endomorfo" className="bg-zinc-900">Endomorfo</option>
+              </select>
             </div>
 
             <button
@@ -145,7 +168,16 @@ export function UserCard() {
 
             <div className="hidden sm:block w-px h-8 bg-zinc-800" />
 
-            <div className="flex flex-col col-span-2 sm:col-span-1 border-t border-zinc-800 pt-3 sm:border-0 sm:pt-0">
+            <div className="flex flex-col border-t border-zinc-800 pt-3 sm:border-0 sm:pt-0">
+              <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Biotipo</span>
+              <span className="text-lg font-semibold text-zinc-200 capitalize">
+                {user.biotype || <span className="text-zinc-600 text-sm">--</span>}
+              </span>
+            </div>
+
+            <div className="hidden sm:block w-px h-8 bg-zinc-800" />
+
+            <div className="flex flex-col border-t border-zinc-800 pt-3 sm:border-0 sm:pt-0">
               <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">IMC</span>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 {!Number.isNaN(imc.value)
@@ -157,6 +189,7 @@ export function UserCard() {
                 </span>
               </div>
             </div>
+
           </div>
         )}
       </div>

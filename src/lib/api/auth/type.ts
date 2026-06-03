@@ -5,8 +5,10 @@ export interface LoginPayload {
 }
 
 export interface UpdateUserPayload {
+  name?: string;
   weight?: number;
   height?: number;
+  biotype?: string;
   avatar?: string;
 }
 
