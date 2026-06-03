@@ -22,6 +22,7 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (field: keyof RegisterData, value: string): void => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -51,15 +52,20 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
     }
 
     try {
-      await registerUser(result.data);
-      clear();
+      const response = await registerUser(result.data);
+
       toast.success("Conta criada! Verifique seu email para ativar a conta.", {
         duration: 6000,
       });
 
-      router.push("/login?verify=true");
+      setIsSuccess(true);
 
     } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        router.push(`/login?email=${encodeURIComponent(form.email)}&exists=true`);
+        return;
+      }
+
       const errorMessage = axios.isAxiosError(err)
         ? err.response?.data?.message ?? "Erro ao criar conta."
         : "Erro ao criar conta.";
@@ -67,5 +73,5 @@ export function useRegisterForm(registerSchema: z.ZodSchema<RegisterData>) {
     }
   };
 
-  return { form, errors, handleChange, handleSubmit };
+  return { form, errors, isSuccess, handleChange, handleSubmit };
 }

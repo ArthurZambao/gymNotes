@@ -9,7 +9,7 @@ export function MainContent({ children }: { children: React.ReactNode }) {
   const hasPadding = !NO_PADDING_ROUTES.includes(pathname);
 
   return (
-    <main className={`flex-1 relative z-10 ${hasPadding ? "pt-20" : ""}`}>
+    <main className={`flex-1 relative z-10 ${hasPadding ? "pt-16" : ""}`}>
       {children}
     </main>
   );

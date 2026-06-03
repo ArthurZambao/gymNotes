@@ -4,7 +4,7 @@ import { ArrowRight, Dumbbell } from "lucide-react";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden pt-20">
+    <section className="relative min-h-[calc(100vh-64px)] flex flex-col justify-center items-center text-center px-6 overflow-hidden">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-150 h-150 bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
 
       <motion.h1

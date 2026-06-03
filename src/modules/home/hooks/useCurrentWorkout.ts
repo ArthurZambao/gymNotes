@@ -34,6 +34,8 @@ export function useCurrentWorkout() {
 
   const [weight, setWeight] = useState(0);
   const [height, setHeight] = useState(0);
+  const [name, setName] = useState("");
+  const [biotype, setBiotype] = useState("");
 
   const currentWorkout = workouts?.[0];
   const currentDay = currentWorkout?.days?.[selectedDayIndex];
@@ -77,9 +79,11 @@ export function useCurrentWorkout() {
       await updateUserRequest(userId, {
         weight,
         height,
+        name,
+        biotype: biotype || undefined,
       });
       const stored = JSON.parse(localStorage.getItem("user") || "{}");
-      const newUser = { ...stored, weight, height };
+      const newUser = { ...stored, weight, height, name, biotype: biotype || undefined };
       localStorage.setItem("user", JSON.stringify(newUser));
       toast.success("Perfil atualizado com sucesso!");
       setIsEditing(false);
@@ -110,6 +114,8 @@ export function useCurrentWorkout() {
     if (user) {
       setWeight(user.weight || 0);
       setHeight(user.height || 0);
+      setName(user.name || "");
+      setBiotype(user.biotype || "");
       setNewAvatar(user.avatar || "");
     }
   }, [user]);
@@ -333,6 +339,10 @@ export function useCurrentWorkout() {
     setNewExerciseUnit,
     weight,
     height,
+    name,
+    setName,
+    biotype,
+    setBiotype,
     selectedMuscles,
     setSelectedMuscles,
     canAddExercise,

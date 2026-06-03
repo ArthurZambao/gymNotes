@@ -5,11 +5,11 @@ import { useRegisterForm } from "../../hook/useRegisterForm";
 import { registerSchema } from "../../schema/register-schema";
 import { RegisterInput } from "@/src/shared/components/formComponents/form-input";
 import Link from "next/link";
-import { Dumbbell, ArrowRight } from "lucide-react";
+import { Dumbbell, ArrowRight, MailCheck } from "lucide-react";
 import { GoogleLoginButton } from "@/src/shared/components/googleLoginButton";
 
 export function RegisterPage() {
-  const { form, errors, handleChange, handleSubmit } = useRegisterForm(registerSchema);
+  const { form, errors, isSuccess, handleChange, handleSubmit } = useRegisterForm(registerSchema);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-zinc-950 text-zinc-100 px-6 relative overflow-hidden selection:bg-emerald-500/30">
@@ -36,61 +36,89 @@ export function RegisterPage() {
         </motion.div>
 
         {/* Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-zinc-900/60 backdrop-blur-md border border-zinc-800 rounded-2xl p-8 shadow-[0_0_60px_rgba(0,0,0,0.5)]"
-        >
-          {/* Header do card */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-extrabold text-zinc-100 tracking-tight">
-              Crie sua conta
-            </h1>
-            <p className="text-zinc-400 mt-1 text-sm">
-              Comece sua evolução agora mesmo!
+        {isSuccess ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="bg-zinc-900/60 backdrop-blur-md border border-emerald-500/20 rounded-2xl p-8 shadow-[0_0_60px_rgba(16,185,129,0.15)] text-center flex flex-col items-center"
+          >
+            <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6">
+              <MailCheck className="text-emerald-500" size={32} />
+            </div>
+            <h2 className="text-2xl font-extrabold text-zinc-100 tracking-tight mb-2">
+              Verifique seu email
+            </h2>
+            <p className="text-zinc-400 text-sm mb-8 leading-relaxed">
+              Enviamos um link de confirmação para <span className="text-emerald-400 font-medium">{form.email}</span>.
+              Por favor, verifique sua caixa de entrada (e a pasta de spam) para ativar sua conta antes de fazer o login.
             </p>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <RegisterInput form={form} errors={errors} handleChange={handleChange} type="name" />
-            <RegisterInput form={form} errors={errors} handleChange={handleChange} type="email" />
-            <RegisterInput form={form} errors={errors} handleChange={handleChange} type="password" />
-
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              className="cursor-pointer group w-full h-12 mt-2 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.25)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)]"
-            >
-              Criar Conta
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </motion.button>
-          </form>
-
-          {/* Divisor */}
-          <div className="my-6 flex items-center gap-3">
-            <div className="flex-1 h-px bg-zinc-800" />
-            <span className="text-zinc-600 text-xs uppercase tracking-widest">ou</span>
-            <div className="flex-1 h-px bg-zinc-800" />
-          </div>
-
-          <div className="flex justify-center mb-4">
-            <GoogleLoginButton />
-          </div>
-
-          {/* Login */}
-          <p className="text-center text-sm text-zinc-500">
-            Já tem uma conta?{" "}
+            
             <Link
               href="/login"
-              className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
+              className="group w-full h-12 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.25)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)]"
             >
-              Entrar
+              Ir para o Login
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
-          </p>
-        </motion.div>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="bg-zinc-900/60 backdrop-blur-md border border-zinc-800 rounded-2xl p-8 shadow-[0_0_60px_rgba(0,0,0,0.5)]"
+          >
+            {/* Header do card */}
+            <div className="mb-8">
+              <h1 className="text-2xl font-extrabold text-zinc-100 tracking-tight">
+                Crie sua conta
+              </h1>
+              <p className="text-zinc-400 mt-1 text-sm">
+                Comece sua evolução agora mesmo!
+              </p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <RegisterInput form={form} errors={errors} handleChange={handleChange} type="name" />
+              <RegisterInput form={form} errors={errors} handleChange={handleChange} type="email" />
+              <RegisterInput form={form} errors={errors} handleChange={handleChange} type="password" />
+
+              <motion.button
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="cursor-pointer group w-full h-12 mt-2 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-zinc-950 font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.25)] hover:shadow-[0_0_30px_rgba(16,185,129,0.45)]"
+              >
+                Criar Conta
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+            </form>
+
+            {/* Divisor */}
+            <div className="my-6 flex items-center gap-3">
+              <div className="flex-1 h-px bg-zinc-800" />
+              <span className="text-zinc-600 text-xs uppercase tracking-widest">ou</span>
+              <div className="flex-1 h-px bg-zinc-800" />
+            </div>
+
+            <div className="flex justify-center mb-4">
+              <GoogleLoginButton />
+            </div>
+
+            {/* Login */}
+            <p className="text-center text-sm text-zinc-500">
+              Já tem uma conta?{" "}
+              <Link
+                href="/login"
+                className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors"
+              >
+                Entrar
+              </Link>
+            </p>
+          </motion.div>
+        )}
 
         {/* Rodapé */}
         <motion.p
