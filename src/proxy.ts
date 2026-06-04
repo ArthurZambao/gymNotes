@@ -7,7 +7,12 @@ export function proxy(request: NextRequest) {
 
   const isAuthPage = pathname === '/login' || pathname === '/register';
   const isHomePage = pathname === '/home' || pathname === '/';
+  const isGoogleCallback = pathname === '/auth/google/callback';
 
+  // Allow Google OAuth callback through without token check
+  if (isGoogleCallback) {
+    return NextResponse.next();
+  }
 
   if (isHomePage && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
