@@ -4,18 +4,30 @@ import { useEffect, useState } from "react";
 import { User } from "../../types/auth";
 import { getMeRequest } from "@/src/lib/api/auth";
 
+function getSafeUserFromStorage(): User | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = localStorage.getItem("user");
+    if (!stored || stored === "undefined" || stored === "null") {
+      return null;
+    }
+    return JSON.parse(stored);
+  } catch {
+    return null;
+  }
+}
+
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const sync = () => {
-      const stored = localStorage.getItem("user");
-      setUser(stored ? JSON.parse(stored) : null);
+      setUser(getSafeUserFromStorage());
     };
     sync();
 
-    const stored = localStorage.getItem("user");
-    if (!stored) {
+    const storedUser = getSafeUserFromStorage();
+    if (!storedUser) {
       getMeRequest()
         .then((userData) => {
           if (userData) {
@@ -38,4 +50,4 @@ export function useUser() {
   }, []);
 
   return user;
-}
+}

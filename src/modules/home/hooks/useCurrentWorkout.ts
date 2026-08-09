@@ -82,7 +82,11 @@ export function useCurrentWorkout() {
         name,
         biotype: biotype || undefined,
       });
-      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      let stored = {};
+      try {
+        const raw = localStorage.getItem("user");
+        if (raw && raw !== "undefined" && raw !== "null") stored = JSON.parse(raw);
+      } catch {}
       const newUser = { ...stored, weight, height, name, biotype: biotype || undefined };
       localStorage.setItem("user", JSON.stringify(newUser));
       toast.success("Perfil atualizado com sucesso!");
@@ -152,7 +156,11 @@ export function useCurrentWorkout() {
   async function handleUpdateAvatar(picUrl: string) {
     try {
       await updateUserRequest(user!.id, { avatar: picUrl });
-      const stored = JSON.parse(localStorage.getItem("user") || "{}");
+      let stored = {};
+      try {
+        const raw = localStorage.getItem("user");
+        if (raw && raw !== "undefined" && raw !== "null") stored = JSON.parse(raw);
+      } catch {}
       localStorage.setItem("user", JSON.stringify({ ...stored, avatar: picUrl }));
       openPictureMenu(false);
       toast.success("Avatar atualizado com sucesso!");

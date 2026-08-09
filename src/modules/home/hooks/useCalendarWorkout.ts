@@ -69,10 +69,15 @@ export function useCalendarWorkout() {
   useEffect(() => {
     if (!currentLog) {
       const saved = localStorage.getItem(draftKey);
-      if (saved) {
-        const { selectedWorkoutDay: day, exerciseForms: forms } = JSON.parse(saved);
-        setSelectedWorkoutDay(day);
-        setExerciseForms(forms);
+      if (saved && saved !== "undefined" && saved !== "null") {
+        try {
+          const { selectedWorkoutDay: day, exerciseForms: forms } = JSON.parse(saved);
+          setSelectedWorkoutDay(day);
+          setExerciseForms(forms);
+        } catch {
+          setSelectedWorkoutDay("");
+          setExerciseForms([]);
+        }
       } else {
         setSelectedWorkoutDay("");
         setExerciseForms([]);
